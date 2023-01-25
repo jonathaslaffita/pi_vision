@@ -111,17 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Distance_good
+# Target rules for targets named exec
 
 # Build rule for target.
-Distance_good: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Distance_good
-.PHONY : Distance_good
+exec: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 exec
+.PHONY : exec
 
 # fast build rule for target.
-Distance_good/fast:
-	$(MAKE) -f CMakeFiles/Distance_good.dir/build.make CMakeFiles/Distance_good.dir/build
-.PHONY : Distance_good/fast
+exec/fast:
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/build
+.PHONY : exec/fast
+
+am7x.o: am7x.cpp.o
+
+.PHONY : am7x.o
+
+# target to build an object file
+am7x.cpp.o:
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/am7x.cpp.o
+.PHONY : am7x.cpp.o
+
+am7x.i: am7x.cpp.i
+
+.PHONY : am7x.i
+
+# target to preprocess a source file
+am7x.cpp.i:
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/am7x.cpp.i
+.PHONY : am7x.cpp.i
+
+am7x.s: am7x.cpp.s
+
+.PHONY : am7x.s
+
+# target to generate assembly for a file
+am7x.cpp.s:
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/am7x.cpp.s
+.PHONY : am7x.cpp.s
 
 distance_good.o: distance_good.cpp.o
 
@@ -129,7 +156,7 @@ distance_good.o: distance_good.cpp.o
 
 # target to build an object file
 distance_good.cpp.o:
-	$(MAKE) -f CMakeFiles/Distance_good.dir/build.make CMakeFiles/Distance_good.dir/distance_good.cpp.o
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/distance_good.cpp.o
 .PHONY : distance_good.cpp.o
 
 distance_good.i: distance_good.cpp.i
@@ -138,7 +165,7 @@ distance_good.i: distance_good.cpp.i
 
 # target to preprocess a source file
 distance_good.cpp.i:
-	$(MAKE) -f CMakeFiles/Distance_good.dir/build.make CMakeFiles/Distance_good.dir/distance_good.cpp.i
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/distance_good.cpp.i
 .PHONY : distance_good.cpp.i
 
 distance_good.s: distance_good.cpp.s
@@ -147,7 +174,7 @@ distance_good.s: distance_good.cpp.s
 
 # target to generate assembly for a file
 distance_good.cpp.s:
-	$(MAKE) -f CMakeFiles/Distance_good.dir/build.make CMakeFiles/Distance_good.dir/distance_good.cpp.s
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/distance_good.cpp.s
 .PHONY : distance_good.cpp.s
 
 # Help Target
@@ -158,7 +185,10 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... Distance_good"
+	@echo "... exec"
+	@echo "... am7x.o"
+	@echo "... am7x.i"
+	@echo "... am7x.s"
 	@echo "... distance_good.o"
 	@echo "... distance_good.i"
 	@echo "... distance_good.s"

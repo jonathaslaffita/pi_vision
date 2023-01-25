@@ -145,7 +145,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=DDistance_good
+CMAKE_PROJECT_NAME:STATIC=PI_VISION
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -215,8 +215,26 @@ DDistance_good_BINARY_DIR:STATIC=/home/jonathas/pi_vision
 //Value Computed by CMake
 DDistance_good_SOURCE_DIR:STATIC=/home/jonathas/pi_vision
 
+//Value Computed by CMake
+Distance_good_BINARY_DIR:STATIC=/home/jonathas/pi_vision
+
+//Value Computed by CMake
+Distance_good_SOURCE_DIR:STATIC=/home/jonathas/pi_vision
+
 //The directory containing a CMake configuration file for OpenCV.
 OpenCV_DIR:PATH=/usr/local/lib/cmake/opencv4
+
+//Value Computed by CMake
+PI_VISION_BINARY_DIR:STATIC=/home/jonathas/pi_vision
+
+//Value Computed by CMake
+PI_VISION_SOURCE_DIR:STATIC=/home/jonathas/pi_vision
+
+//Value Computed by CMake
+myProject_BINARY_DIR:STATIC=/home/jonathas/pi_vision
+
+//Value Computed by CMake
+myProject_SOURCE_DIR:STATIC=/home/jonathas/pi_vision
 
 
 ########################

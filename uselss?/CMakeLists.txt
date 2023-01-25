@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8)
+project( DDistance_good )
+find_package( OpenCV REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+add_executable( Distance_good distance_good.cpp )
+target_link_libraries( Distance_good ${OpenCV_LIBS} )

@@ -53,7 +53,7 @@ CMAKE_BINARY_DIR = /home/jonathas/pi_vision
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Distance_good.dir/all
+all: CMakeFiles/exec.dir/all
 
 .PHONY : all
 
@@ -63,36 +63,36 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Distance_good.dir/clean
+clean: CMakeFiles/exec.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/Distance_good.dir
+# Target rules for target CMakeFiles/exec.dir
 
 # All Build rule for target.
-CMakeFiles/Distance_good.dir/all:
-	$(MAKE) -f CMakeFiles/Distance_good.dir/build.make CMakeFiles/Distance_good.dir/depend
-	$(MAKE) -f CMakeFiles/Distance_good.dir/build.make CMakeFiles/Distance_good.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonathas/pi_vision/CMakeFiles --progress-num=1,2 "Built target Distance_good"
-.PHONY : CMakeFiles/Distance_good.dir/all
+CMakeFiles/exec.dir/all:
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/depend
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonathas/pi_vision/CMakeFiles --progress-num=1,2,3 "Built target exec"
+.PHONY : CMakeFiles/exec.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Distance_good.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathas/pi_vision/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Distance_good.dir/all
+CMakeFiles/exec.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathas/pi_vision/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/exec.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathas/pi_vision/CMakeFiles 0
-.PHONY : CMakeFiles/Distance_good.dir/rule
+.PHONY : CMakeFiles/exec.dir/rule
 
 # Convenience name for target.
-Distance_good: CMakeFiles/Distance_good.dir/rule
+exec: CMakeFiles/exec.dir/rule
 
-.PHONY : Distance_good
+.PHONY : exec
 
 # clean rule for target.
-CMakeFiles/Distance_good.dir/clean:
-	$(MAKE) -f CMakeFiles/Distance_good.dir/build.make CMakeFiles/Distance_good.dir/clean
-.PHONY : CMakeFiles/Distance_good.dir/clean
+CMakeFiles/exec.dir/clean:
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/clean
+.PHONY : CMakeFiles/exec.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
