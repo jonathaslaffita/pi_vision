@@ -13,11 +13,13 @@
 #include "rtwtypes.h"
 #include <stddef.h>
 #include <mutex>
+#include <thread>
+#include "pthread.h"
 
 #ifndef AM7_H
 #define AM7_H
 
-extern std::mutex mutex_am7;
+std::mutex mutex_am7;
 
 //Define the baudrate for the module and the starting byte 
 #define START_BYTE 0x9B  //1st start block identifier byte

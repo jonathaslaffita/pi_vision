@@ -7,9 +7,12 @@
 #include <opencv2/calib3d/calib3d.hpp>
 #include <chrono>
 #include "am7x.h"
+
 using namespace std;
 using namespace cv;
 using namespace chrono;
+
+// extern std::mutex mutex_am7;
 
 am7_data_out output1;
 extern void mainpi(am7_data_out *output);
@@ -30,11 +33,11 @@ Mat distCoeffs =  (Mat_<double>(5,1) <<  -0.13983382 , 0.38984575, -0.00326045 ,
 
 vector<vector<Point3f>> objPoints{{Point3f(0.0, 6.0, 0),Point3f(15.0, 6.0, 0), Point3f(15.0, 21.0 ,0),Point3f(0.0, 21.0,0)},{Point3f(0.0, 0.0,0),Point3f(5.0, 0.0,0),Point3f(5.0, 5.0,0),Point3f(0.0, 5.0,0)},{Point3f(10.0, 0.0,0),Point3f(15.0, 0.0,0),Point3f(15.0, 5.0,0),Point3f(10.0, 5.0,0)},{Point3f(0.0, 22.0,0),Point3f(5.0, 22.0,0),Point3f(5.0, 27.0,0),Point3f(0.0, 27.0,0)},{Point3f(10.0, 22.0,0),Point3f(15.0, 22.0,0),Point3f(15.0, 27.0,0),Point3f(10.0, 27.0,0)},{Point3f(6.25, 1.25,0),Point3f(8.75, 1.25,0),Point3f(8.75, 3.625,0),Point3f(6.25, 3.625,0)},{Point3f(6.25, 23.25,0),Point3f(8.75, 23.25,0),Point3f(8.75, 25.75,0),Point3f(6.25, 25.75,0)}};
 
-Ptr<aruco::Dictionary> dictionary =aruco::getPredefinedDictionary(aruco::DICT_5X5_50);  //for pi
+// Ptr<aruco::Dictionary> dictionary =aruco::getPredefinedDictionary(aruco::DICT_5X5_50);  //for pi
 
-// aruco::DetectorParameters detectorParams = aruco::DetectorParameters(); //not for pi
-// aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_5X5_50); //not for pi
-// aruco::ArucoDetector detector(dictionary, detectorParams); //not for pi
+aruco::DetectorParameters detectorParams = aruco::DetectorParameters(); //not for pi
+aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_5X5_50); //not for pi
+aruco::ArucoDetector detector(dictionary, detectorParams); //not for pi
 
 Mat rvecs;
 Mat tvecs;
@@ -48,8 +51,8 @@ while (inputVideo.grab()) {
     image.copyTo(imageCopy);
     vector<int> ids;
     vector<vector<Point2f>> corners;
-    // detector.detectMarkers(image, corners, ids); //not for pi
-    aruco::detectMarkers(image, dictionary, corners, ids); //for pi
+    detector.detectMarkers(image, corners, ids); //not for pi
+    // aruco::detectMarkers(image, dictionary, corners, ids); //for pi
     
     if (ids.size() > 0) {
         aruco::drawDetectedMarkers(imageCopy, corners, ids);

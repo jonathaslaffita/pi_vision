@@ -8,11 +8,11 @@
 #include <iostream>
 #include <time.h>
 #include "distance_good.hpp"
-#include <thread>
-#include <mutex>
 
 using namespace std;
-extern std::mutex mutex_am7;
+
+// mutex mutex_am7;
+
 struct am7_data_out myam7_data_out;
 struct am7_data_out myam7_data_out_copy;
 struct am7_data_out myam7_data_out_copy_internal;

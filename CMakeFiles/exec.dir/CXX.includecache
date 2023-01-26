@@ -21,10 +21,6 @@ time.h
 -
 distance_good.hpp
 /home/jonathas/pi_vision/distance_good.hpp
-thread
--
-mutex
--
 
 /home/jonathas/pi_vision/am7x.h
 stdio.h
@@ -57,24 +53,10 @@ stddef.h
 -
 mutex
 -
-
-/home/jonathas/pi_vision/distance_good.cpp
-opencv2/core.hpp
+thread
 -
-opencv2/imgcodecs.hpp
--
-opencv2/highgui.hpp
--
-iostream
--
-opencv2/aruco.hpp
--
-opencv2/calib3d/calib3d.hpp
--
-chrono
--
-am7x.h
-/home/jonathas/pi_vision/am7x.h
+pthread.h
+/home/jonathas/pi_vision/pthread.h
 
 /home/jonathas/pi_vision/distance_good.hpp
 
@@ -101,10 +83,6 @@ opencv2/features2d.hpp
 /usr/local/include/opencv4/opencv2/opencv2/features2d.hpp
 opencv2/core/affine.hpp
 /usr/local/include/opencv4/opencv2/opencv2/core/affine.hpp
-
-/usr/local/include/opencv4/opencv2/calib3d/calib3d.hpp
-opencv2/calib3d.hpp
-/usr/local/include/opencv4/opencv2/calib3d/opencv2/calib3d.hpp
 
 /usr/local/include/opencv4/opencv2/core.hpp
 opencv2/core/cvdef.h
