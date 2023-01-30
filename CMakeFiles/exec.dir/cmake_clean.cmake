@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/exec.dir/am7x.cpp.o"
-  "CMakeFiles/exec.dir/distance_good.cpp.o"
   "exec"
   "exec.pdb"
 )

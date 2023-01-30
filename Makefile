@@ -150,33 +150,6 @@ am7x.cpp.s:
 	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/am7x.cpp.s
 .PHONY : am7x.cpp.s
 
-distance_good.o: distance_good.cpp.o
-
-.PHONY : distance_good.o
-
-# target to build an object file
-distance_good.cpp.o:
-	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/distance_good.cpp.o
-.PHONY : distance_good.cpp.o
-
-distance_good.i: distance_good.cpp.i
-
-.PHONY : distance_good.i
-
-# target to preprocess a source file
-distance_good.cpp.i:
-	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/distance_good.cpp.i
-.PHONY : distance_good.cpp.i
-
-distance_good.s: distance_good.cpp.s
-
-.PHONY : distance_good.s
-
-# target to generate assembly for a file
-distance_good.cpp.s:
-	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/distance_good.cpp.s
-.PHONY : distance_good.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -189,9 +162,6 @@ help:
 	@echo "... am7x.o"
 	@echo "... am7x.i"
 	@echo "... am7x.s"
-	@echo "... distance_good.o"
-	@echo "... distance_good.i"
-	@echo "... distance_good.s"
 .PHONY : help
 
 

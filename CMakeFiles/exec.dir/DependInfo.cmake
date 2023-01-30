@@ -5,7 +5,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/jonathas/pi_vision/am7x.cpp" "/home/jonathas/pi_vision/CMakeFiles/exec.dir/am7x.cpp.o"
-  "/home/jonathas/pi_vision/distance_good.cpp" "/home/jonathas/pi_vision/CMakeFiles/exec.dir/distance_good.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
