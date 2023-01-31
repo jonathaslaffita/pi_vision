@@ -4,10 +4,8 @@
 CMakeFiles/exec.dir/am7x.cpp.o
  /home/jonathas/pi_vision/am7x.cpp
  /home/jonathas/pi_vision/am7x.h
- /home/jonathas/pi_vision/distance_good.hpp
  /home/jonathas/pi_vision/rtwtypes.h
  /usr/local/include/opencv4/opencv2/aruco.hpp
- /usr/local/include/opencv4/opencv2/aruco/aruco_calib.hpp
  /usr/local/include/opencv4/opencv2/calib3d.hpp
  /usr/local/include/opencv4/opencv2/calib3d/calib3d.hpp
  /usr/local/include/opencv4/opencv2/core.hpp
@@ -46,8 +44,5 @@ CMakeFiles/exec.dir/am7x.cpp.o
  /usr/local/include/opencv4/opencv2/flann/miniflann.hpp
  /usr/local/include/opencv4/opencv2/highgui.hpp
  /usr/local/include/opencv4/opencv2/imgcodecs.hpp
- /usr/local/include/opencv4/opencv2/objdetect/aruco_board.hpp
- /usr/local/include/opencv4/opencv2/objdetect/aruco_detector.hpp
- /usr/local/include/opencv4/opencv2/objdetect/aruco_dictionary.hpp
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp
  /usr/local/include/opencv4/opencv2/videoio.hpp

@@ -15,8 +15,6 @@ iostream
 -
 time.h
 -
-distance_good.hpp
-/home/jonathas/pi_vision/distance_good.hpp
 opencv2/core.hpp
 -
 opencv2/imgcodecs.hpp
@@ -66,8 +64,6 @@ thread
 pthread.h
 /home/jonathas/pi_vision/pthread.h
 
-/home/jonathas/pi_vision/distance_good.hpp
-
 /home/jonathas/pi_vision/rtwtypes.h
 stdbool.h
 -
@@ -77,10 +73,6 @@ opencv2/objdetect/aruco_detector.hpp
 /usr/local/include/opencv4/opencv2/opencv2/objdetect/aruco_detector.hpp
 opencv2/aruco/aruco_calib.hpp
 /usr/local/include/opencv4/opencv2/opencv2/aruco/aruco_calib.hpp
-
-/usr/local/include/opencv4/opencv2/aruco/aruco_calib.hpp
-opencv2/objdetect/aruco_board.hpp
--
 
 /usr/local/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp
@@ -455,20 +447,6 @@ opencv2/videoio.hpp
 /usr/local/include/opencv4/opencv2/imgcodecs.hpp
 opencv2/core.hpp
 /usr/local/include/opencv4/opencv2/opencv2/core.hpp
-
-/usr/local/include/opencv4/opencv2/objdetect/aruco_board.hpp
-opencv2/core.hpp
--
-
-/usr/local/include/opencv4/opencv2/objdetect/aruco_detector.hpp
-opencv2/objdetect/aruco_dictionary.hpp
--
-opencv2/objdetect/aruco_board.hpp
--
-
-/usr/local/include/opencv4/opencv2/objdetect/aruco_dictionary.hpp
-opencv2/core.hpp
--
 
 /usr/local/include/opencv4/opencv2/opencv_modules.hpp
 

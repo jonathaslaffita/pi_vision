@@ -3,10 +3,8 @@
 
 CMakeFiles/exec.dir/am7x.cpp.o: am7x.cpp
 CMakeFiles/exec.dir/am7x.cpp.o: am7x.h
-CMakeFiles/exec.dir/am7x.cpp.o: distance_good.hpp
 CMakeFiles/exec.dir/am7x.cpp.o: rtwtypes.h
 CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/aruco.hpp
-CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/aruco/aruco_calib.hpp
 CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/calib3d.hpp
 CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/calib3d/calib3d.hpp
 CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/core.hpp
@@ -45,9 +43,6 @@ CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/flann/defines
 CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/flann/miniflann.hpp
 CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/highgui.hpp
 CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/imgcodecs.hpp
-CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/objdetect/aruco_board.hpp
-CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/objdetect/aruco_detector.hpp
-CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/objdetect/aruco_dictionary.hpp
 CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/opencv_modules.hpp
 CMakeFiles/exec.dir/am7x.cpp.o: /usr/local/include/opencv4/opencv2/videoio.hpp
 

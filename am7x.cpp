@@ -5,7 +5,7 @@
 // #include "softServo.h"
 #include <iostream>
 #include <time.h>
-#include "distance_good.hpp"
+// #include "distance_good.hpp"
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
@@ -188,29 +188,31 @@ void* first_thread() //Receive and send messages to pixhawk
 // extern "C" void second_thread();
 void* second_thread() //Run the optimization code 
 {
+      
       am7_data_out output1;
       auto start = std::chrono::high_resolution_clock::now();
       VideoCapture inputVideo;
+      output1.rolling_msg_out = 0.154687;
       inputVideo.open(0);
-
+      
 
       Mat cameraMatrix = (Mat_<double>(3,3) <<  662.81531922 ,  0.     ,    462.46163531,  0.  ,       664.52337529 ,291.17616957 ,  0.,           0.    ,       1.       );
 
       Mat distCoeffs =  (Mat_<double>(5,1) <<  -0.13983382 , 0.38984575, -0.00326045 , 0.00090355, -0.41180841 );
-
+      
       vector<vector<Point3f>> objPoints{{Point3f(0.0, 6.0, 0),Point3f(15.0, 6.0, 0), Point3f(15.0, 21.0 ,0),Point3f(0.0, 21.0,0)},{Point3f(0.0, 0.0,0),Point3f(5.0, 0.0,0),Point3f(5.0, 5.0,0),Point3f(0.0, 5.0,0)},{Point3f(10.0, 0.0,0),Point3f(15.0, 0.0,0),Point3f(15.0, 5.0,0),Point3f(10.0, 5.0,0)},{Point3f(0.0, 22.0,0),Point3f(5.0, 22.0,0),Point3f(5.0, 27.0,0),Point3f(0.0, 27.0,0)},{Point3f(10.0, 22.0,0),Point3f(15.0, 22.0,0),Point3f(15.0, 27.0,0),Point3f(10.0, 27.0,0)},{Point3f(6.25, 1.25,0),Point3f(8.75, 1.25,0),Point3f(8.75, 3.625,0),Point3f(6.25, 3.625,0)},{Point3f(6.25, 23.25,0),Point3f(8.75, 23.25,0),Point3f(8.75, 25.75,0),Point3f(6.25, 25.75,0)}};
 
-      // Ptr<aruco::Dictionary> dictionary =aruco::getPredefinedDictionary(aruco::DICT_5X5_50);  //for pi
+      Ptr<aruco::Dictionary> dictionary =aruco::getPredefinedDictionary(aruco::DICT_5X5_50);  //for pi
 
-      aruco::DetectorParameters detectorParams = aruco::DetectorParameters(); //not for pi
-      aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_5X5_50); //not for pi
-      aruco::ArucoDetector detector(dictionary, detectorParams); //not for pi
+      // aruco::DetectorParameters detectorParams = aruco::DetectorParameters(); //not for pi
+      // aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_5X5_50); //not for pi
+      // aruco::ArucoDetector detector(dictionary, detectorParams); //not for pi
 
       Mat rvecs;
       Mat tvecs;
       Mat prevrvecs;
       Mat rvecderriv;
-
+      cout << "heloo3" << endl;
       while (inputVideo.grab()) {
           
           Mat image, imageCopy;
@@ -218,11 +220,11 @@ void* second_thread() //Run the optimization code
           image.copyTo(imageCopy);
           vector<int> ids;
           vector<vector<Point2f>> corners;
-          detector.detectMarkers(image, corners, ids); //not for pi
-          // aruco::detectMarkers(image, dictionary, corners, ids); //for pi
+          // detector.detectMarkers(image, corners, ids); //not for pi
+          aruco::detectMarkers(image, dictionary, corners, ids); //for pi
           
           if (ids.size() > 0) {
-              aruco::drawDetectedMarkers(imageCopy, corners, ids);
+              // aruco::drawDetectedMarkers(imageCopy, corners, ids);
               int nMarkers = corners.size();
               vector<Point3f> corners2{};
               vector<Point2f> corners3{};
@@ -236,13 +238,14 @@ void* second_thread() //Run the optimization code
               corners3.push_back(corners[i][1]);
               corners3.push_back(corners[i][2]);
               corners3.push_back(corners[i][3]);
+              
               }
                     
               solvePnPRansac(corners2, corners3, cameraMatrix, distCoeffs, rvecs, tvecs);
                   
               // Draw axis for each marker
                   
-              drawFrameAxes(imageCopy, cameraMatrix, distCoeffs, rvecs, tvecs, 10);
+              // drawFrameAxes(imageCopy, cameraMatrix, distCoeffs, rvecs, tvecs, 10);
                   
               
               cout << tvecs << endl;
@@ -250,14 +253,14 @@ void* second_thread() //Run the optimization code
               auto duration = duration_cast<milliseconds>(stop - start);
               cout << "Time taken by function: " << duration.count() << " microseconds" << endl;
               start = stop;
-              }
+              
           
-          int waitTime = 10;
+          // int waitTime = 10;
           // Show resulting image and close window
-          imshow("out", imageCopy);
-          char key = (char) waitKey(waitTime);
-          if (key == 27)
-              break;
+          // imshow("out", imageCopy);
+          // char key = (char) waitKey(waitTime);
+          // if (key == 27)
+          //     break;
 
           //Print performances if needed
           // if(verbose_runtime){
@@ -268,32 +271,42 @@ void* second_thread() //Run the optimization code
 
           // extra_data_out_copy[0] = 1.453; 
           // extra_data_out_copy[1] = 1.23423; 
-
-          output1.pi_translation_x = tvecs.at<int16_t>(0);
-        output1.pi_translation_y = tvecs.at<int16_t>(1);
-          output1.pi_translation_z = tvecs.at<int16_t>(2);
-        output1.pi_rotation_x = rvecs.at<int16_t>(0);
-          output1.pi_rotation_y = rvecs.at<int16_t>(1);
-          output1.pi_rotation_z = rvecs.at<int16_t>(2);
         
+        output1.pi_translation_x = tvecs.at<int16_t>(0);
+        output1.pi_translation_y = tvecs.at<int16_t>(1);
+        output1.pi_translation_z = tvecs.at<int16_t>(2);
+        output1.pi_rotation_x = rvecs.at<int16_t>(0);
+        output1.pi_rotation_y = rvecs.at<int16_t>(1);
+        output1.pi_rotation_z = rvecs.at<int16_t>(2);
+          }
+        else{
+        output1.pi_translation_x = 0.0;
+        output1.pi_translation_y = 0.0;
+        output1.pi_translation_z = 0.0;
+        output1.pi_rotation_x = 0.0;
+        output1.pi_rotation_y = 0.0;
+        output1.pi_rotation_z = 0.0;
+        }
+          
           mutex_am7.lock();
           memcpy(&myam7_data_out_copy, &output1, sizeof(struct am7_data_out));
           // memcpy(&extra_data_out, &extra_data_out_copy, sizeof(struct am7_data_out));
           mutex_am7.unlock(); 
+
       }
 
 
     //Print received data if needed
-    if(verbose_received_data){
+    // if(verbose_received_data){
 
-      printf("\n ROLLING MESSAGE VARIABLES IN-------------------------------------------------- \n"); 
+    //   printf("\n ROLLING MESSAGE VARIABLES IN-------------------------------------------------- \n"); 
      
-      printf(" \n\n\n");
+    //   printf(" \n\n\n");
 
-      fflush(stdout);
-    }
+    //   fflush(stdout);
+    // }
 
-   
+      
     return NULL;
   }
 
