@@ -287,7 +287,8 @@ void* second_thread() //Run the optimization code
         output1.pi_rotation_y = 0.0;
         output1.pi_rotation_z = 0.0;
         }
-          
+          extra_data_out_copy[0] = 1.453;
+          extra_data_out_copy[1] = 1.23423; 
           mutex_am7.lock();
           memcpy(&myam7_data_out_copy, &output1, sizeof(struct am7_data_out));
           // memcpy(&extra_data_out, &extra_data_out_copy, sizeof(struct am7_data_out));

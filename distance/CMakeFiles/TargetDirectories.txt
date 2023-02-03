@@ -1,0 +1,3 @@
+/home/jonathas/pi_vision/distance/CMakeFiles/rebuild_cache.dir
+/home/jonathas/pi_vision/distance/CMakeFiles/distance.dir
+/home/jonathas/pi_vision/distance/CMakeFiles/edit_cache.dir
