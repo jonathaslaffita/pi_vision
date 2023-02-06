@@ -166,7 +166,7 @@ void send_receive_am7(){
   //Writing routine with protection to not exceed desired packet frequency:
   gettimeofday(&current_time, NULL); 
   if((current_time.tv_sec*1e6 + current_time.tv_usec) - (last_sent_msg_time.tv_sec*1e6 + last_sent_msg_time.tv_usec) > (1e6/MAX_FREQUENCY_MSG_OUT)){
-    writing_routine();
+  writing_routine();
   }
 
   //Print some stats
@@ -251,7 +251,7 @@ void* second_thread() //Run the optimization code
               cout << tvecs << endl;
               auto stop = high_resolution_clock::now();
               auto duration = duration_cast<milliseconds>(stop - start);
-              cout << "Time taken by function: " << duration.count() << " microseconds" << endl;
+              cout << "frequency vision " << 1000/duration.count() << "Hz" << endl;
               start = stop;
               
           
@@ -271,31 +271,34 @@ void* second_thread() //Run the optimization code
 
           // extra_data_out_copy[0] = 1.453; 
           // extra_data_out_copy[1] = 1.23423; 
-        
+        tvecs.convertTo(tvecs, CV_16S, 10);
         output1.pi_translation_x = tvecs.at<int16_t>(0);
         output1.pi_translation_y = tvecs.at<int16_t>(1);
         output1.pi_translation_z = tvecs.at<int16_t>(2);
         output1.pi_rotation_x = rvecs.at<int16_t>(0);
         output1.pi_rotation_y = rvecs.at<int16_t>(1);
         output1.pi_rotation_z = rvecs.at<int16_t>(2);
+        cout << tvecs.at<int16_t>(0) << endl;
           }
         else{
-        output1.pi_translation_x = 0.0;
-        output1.pi_translation_y = 0.0;
-        output1.pi_translation_z = 0.0;
-        output1.pi_rotation_x = 0.0;
-        output1.pi_rotation_y = 0.0;
-        output1.pi_rotation_z = 0.0;
+        output1.pi_translation_x = (int16_t)42;
+        output1.pi_translation_y = (int16_t)36;
+        output1.pi_translation_z = (int16_t)23;
+        output1.pi_rotation_x = (int16_t)45;
+        output1.pi_rotation_y = (int16_t)34;
+        output1.pi_rotation_z = (int16_t)123;
+        
         }
+          cout << output1.pi_translation_x << endl;
           extra_data_out_copy[0] = 1.453;
           extra_data_out_copy[1] = 1.23423; 
           mutex_am7.lock();
           memcpy(&myam7_data_out_copy, &output1, sizeof(struct am7_data_out));
-          // memcpy(&extra_data_out, &extra_data_out_copy, sizeof(struct am7_data_out));
+          memcpy(&extra_data_out, &extra_data_out_copy, sizeof(struct am7_data_out));
           mutex_am7.unlock(); 
-
+          // writing_routine();
       }
-
+      
 
     //Print received data if needed
     // if(verbose_received_data){
