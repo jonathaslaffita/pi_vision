@@ -202,16 +202,16 @@ void* second_thread() //Run the optimization code
       
       vector<vector<Point3f>> objPoints{{Point3f(0.0, 6.0, 0),Point3f(15.0, 6.0, 0), Point3f(15.0, 21.0 ,0),Point3f(0.0, 21.0,0)},{Point3f(0.0, 0.0,0),Point3f(5.0, 0.0,0),Point3f(5.0, 5.0,0),Point3f(0.0, 5.0,0)},{Point3f(10.0, 0.0,0),Point3f(15.0, 0.0,0),Point3f(15.0, 5.0,0),Point3f(10.0, 5.0,0)},{Point3f(0.0, 22.0,0),Point3f(5.0, 22.0,0),Point3f(5.0, 27.0,0),Point3f(0.0, 27.0,0)},{Point3f(10.0, 22.0,0),Point3f(15.0, 22.0,0),Point3f(15.0, 27.0,0),Point3f(10.0, 27.0,0)},{Point3f(6.25, 1.25,0),Point3f(8.75, 1.25,0),Point3f(8.75, 3.625,0),Point3f(6.25, 3.625,0)},{Point3f(6.25, 23.25,0),Point3f(8.75, 23.25,0),Point3f(8.75, 25.75,0),Point3f(6.25, 25.75,0)}};
 
-      Ptr<aruco::Dictionary> dictionary =aruco::getPredefinedDictionary(aruco::DICT_5X5_50);  //for pi
+      // Ptr<aruco::Dictionary> dictionary =aruco::getPredefinedDictionary(aruco::DICT_5X5_50);  //for pi
 
-      // aruco::DetectorParameters detectorParams = aruco::DetectorParameters(); //not for pi
-      // aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_5X5_50); //not for pi
-      // aruco::ArucoDetector detector(dictionary, detectorParams); //not for pi
+      aruco::DetectorParameters detectorParams = aruco::DetectorParameters(); //not for pi
+      aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_5X5_50); //not for pi
+      aruco::ArucoDetector detector(dictionary, detectorParams); //not for pi
 
       Mat rvecs;
       Mat tvecs;
-      Mat prevrvecs;
-      Mat rvecderriv;
+      Mat prevtvecs = Mat::zeros(3, 1, CV_16S);
+      Mat tvecderriv = Mat::zeros(3, 1, CV_16S);
       cout << "heloo3" << endl;
       while (inputVideo.grab()) {
           
@@ -220,8 +220,8 @@ void* second_thread() //Run the optimization code
           image.copyTo(imageCopy);
           vector<int> ids;
           vector<vector<Point2f>> corners;
-          // detector.detectMarkers(image, corners, ids); //not for pi
-          aruco::detectMarkers(image, dictionary, corners, ids); //for pi
+          detector.detectMarkers(image, corners, ids); //not for pi
+          // aruco::detectMarkers(image, dictionary, corners, ids); //for pi
           
           if (ids.size() > 0) {
               // aruco::drawDetectedMarkers(imageCopy, corners, ids);
@@ -248,10 +248,15 @@ void* second_thread() //Run the optimization code
               // drawFrameAxes(imageCopy, cameraMatrix, distCoeffs, rvecs, tvecs, 10);
                   
               
-              cout << tvecs << endl;
+              tvecs.convertTo(tvecs, CV_16S, 10);
+
               auto stop = high_resolution_clock::now();
               auto duration = duration_cast<milliseconds>(stop - start);
               cout << "frequency vision " << 1000/duration.count() << "Hz" << endl;
+              cout << tvecs-prevtvecs << endl;
+              tvecderriv = 1000*(tvecs - prevtvecs)/duration.count();
+              cout << tvecderriv << endl;
+              prevtvecs = tvecs;
               start = stop;
               
           
@@ -271,32 +276,30 @@ void* second_thread() //Run the optimization code
 
           // extra_data_out_copy[0] = 1.453; 
           // extra_data_out_copy[1] = 1.23423; 
-        tvecs.convertTo(tvecs, CV_16S, 10);
+        
+        tvecderriv.convertTo(tvecderriv, CV_16S, 10);
         output1.pi_translation_x = tvecs.at<int16_t>(0);
         output1.pi_translation_y = tvecs.at<int16_t>(1);
         output1.pi_translation_z = tvecs.at<int16_t>(2);
         output1.pi_rotation_x = rvecs.at<int16_t>(0);
         output1.pi_rotation_y = rvecs.at<int16_t>(1);
         output1.pi_rotation_z = rvecs.at<int16_t>(2);
+        output1.pi_translation_speed_x = tvecderriv.at<int16_t>(0);
+        output1.pi_translation_speed_y = tvecderriv.at<int16_t>(1);
+        output1.pi_translation_speed_z = tvecderriv.at<int16_t>(2);
         cout << tvecs.at<int16_t>(0) << endl;
+        cout << tvecderriv.at<int16_t>(0) << endl;
           }
-        else{
-        output1.pi_translation_x = (int16_t)42;
-        output1.pi_translation_y = (int16_t)36;
-        output1.pi_translation_z = (int16_t)23;
-        output1.pi_rotation_x = (int16_t)45;
-        output1.pi_rotation_y = (int16_t)34;
-        output1.pi_rotation_z = (int16_t)123;
         
-        }
-          cout << output1.pi_translation_x << endl;
-          extra_data_out_copy[0] = 1.453;
-          extra_data_out_copy[1] = 1.23423; 
-          mutex_am7.lock();
-          memcpy(&myam7_data_out_copy, &output1, sizeof(struct am7_data_out));
-          memcpy(&extra_data_out, &extra_data_out_copy, sizeof(struct am7_data_out));
-          mutex_am7.unlock(); 
-          // writing_routine();
+        output1.pivision_flag = ids.size();
+        cout << output1.pi_translation_x << endl;
+        extra_data_out_copy[0] = 1.453;
+        extra_data_out_copy[1] = 1.23423; 
+        mutex_am7.lock();
+        memcpy(&myam7_data_out_copy, &output1, sizeof(struct am7_data_out));
+        memcpy(&extra_data_out, &extra_data_out_copy, sizeof(struct am7_data_out));
+        mutex_am7.unlock(); 
+        // writing_routine();
       }
       
 
@@ -319,16 +322,16 @@ void* second_thread() //Run the optimization code
 int main() {
 
   //Initialize the serial 
-  am7_init();
+  // am7_init();
 
   // make threads
-  thread thread1(first_thread);
+  // thread thread1(first_thread);
   thread thread2(second_thread);
   // pthread_create(&thread1, NULL, first_thread, NULL);
   // pthread_create(&thread2, NULL, second_thread, NULL);
 
   // wait for them to finish
-  thread1.join();
+  // thread1.join();
   thread2.join(); 
 
   //Close the serial and clean the variables 

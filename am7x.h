@@ -24,17 +24,21 @@
 //Define the baudrate for the module and the starting byte 
 #define START_BYTE 0x9B  //1st start block identifier byte
 #define BAUDRATE_AM7 460800 //Define the baudrate
-#define MAX_FREQUENCY_MSG_OUT 550 //Define the maximum message output frequency
+#define MAX_FREQUENCY_MSG_OUT 50 //Define the maximum message output frequency
 
 //Communication structures
 struct  __attribute__((__packed__)) am7_data_out {
     //Actuator state
+    uint8_T pivision_flag;
     int16_t pi_translation_x;
 	int16_t pi_translation_y;
     int16_t pi_translation_z;
 	int16_t pi_rotation_x;
 	int16_t pi_rotation_y;
 	int16_t pi_rotation_z;
+    int16_t pi_translation_speed_x;
+	int16_t pi_translation_speed_y;
+    int16_t pi_translation_speed_z;
     float rolling_msg_out;
     uint8_T rolling_msg_out_id;
 	uint8_T checksum_out;
