@@ -27,6 +27,8 @@ opencv2/calib3d/calib3d.hpp
 -
 chrono
 -
+vector
+-
 
 /home/jonathas/pi_vision/am7x.h
 stdio.h
@@ -73,6 +75,10 @@ opencv2/objdetect/aruco_detector.hpp
 /usr/local/include/opencv4/opencv2/opencv2/objdetect/aruco_detector.hpp
 opencv2/aruco/aruco_calib.hpp
 /usr/local/include/opencv4/opencv2/opencv2/aruco/aruco_calib.hpp
+
+/usr/local/include/opencv4/opencv2/aruco/aruco_calib.hpp
+opencv2/objdetect/aruco_board.hpp
+-
 
 /usr/local/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp
@@ -447,6 +453,20 @@ opencv2/videoio.hpp
 /usr/local/include/opencv4/opencv2/imgcodecs.hpp
 opencv2/core.hpp
 /usr/local/include/opencv4/opencv2/opencv2/core.hpp
+
+/usr/local/include/opencv4/opencv2/objdetect/aruco_board.hpp
+opencv2/core.hpp
+-
+
+/usr/local/include/opencv4/opencv2/objdetect/aruco_detector.hpp
+opencv2/objdetect/aruco_dictionary.hpp
+-
+opencv2/objdetect/aruco_board.hpp
+-
+
+/usr/local/include/opencv4/opencv2/objdetect/aruco_dictionary.hpp
+opencv2/core.hpp
+-
 
 /usr/local/include/opencv4/opencv2/opencv_modules.hpp
 

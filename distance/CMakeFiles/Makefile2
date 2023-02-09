@@ -53,7 +53,7 @@ CMAKE_BINARY_DIR = /home/jonathas/pi_vision/distance
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/distance.dir/all
+all: CMakeFiles/exec.dir/all
 
 .PHONY : all
 
@@ -63,36 +63,36 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/distance.dir/clean
+clean: CMakeFiles/exec.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/distance.dir
+# Target rules for target CMakeFiles/exec.dir
 
 # All Build rule for target.
-CMakeFiles/distance.dir/all:
-	$(MAKE) -f CMakeFiles/distance.dir/build.make CMakeFiles/distance.dir/depend
-	$(MAKE) -f CMakeFiles/distance.dir/build.make CMakeFiles/distance.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonathas/pi_vision/distance/CMakeFiles --progress-num=1,2 "Built target distance"
-.PHONY : CMakeFiles/distance.dir/all
+CMakeFiles/exec.dir/all:
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/depend
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonathas/pi_vision/distance/CMakeFiles --progress-num=1,2 "Built target exec"
+.PHONY : CMakeFiles/exec.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/distance.dir/rule: cmake_check_build_system
+CMakeFiles/exec.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathas/pi_vision/distance/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/distance.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/exec.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathas/pi_vision/distance/CMakeFiles 0
-.PHONY : CMakeFiles/distance.dir/rule
+.PHONY : CMakeFiles/exec.dir/rule
 
 # Convenience name for target.
-distance: CMakeFiles/distance.dir/rule
+exec: CMakeFiles/exec.dir/rule
 
-.PHONY : distance
+.PHONY : exec
 
 # clean rule for target.
-CMakeFiles/distance.dir/clean:
-	$(MAKE) -f CMakeFiles/distance.dir/build.make CMakeFiles/distance.dir/clean
-.PHONY : CMakeFiles/distance.dir/clean
+CMakeFiles/exec.dir/clean:
+	$(MAKE) -f CMakeFiles/exec.dir/build.make CMakeFiles/exec.dir/clean
+.PHONY : CMakeFiles/exec.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

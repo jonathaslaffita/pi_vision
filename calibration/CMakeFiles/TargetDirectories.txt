@@ -1,0 +1,3 @@
+/home/jonathas/pi_vision/calibration/CMakeFiles/rebuild_cache.dir
+/home/jonathas/pi_vision/calibration/CMakeFiles/edit_cache.dir
+/home/jonathas/pi_vision/calibration/CMakeFiles/calib.dir

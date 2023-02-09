@@ -1,3 +1,14 @@
+# cmake_minimum_required(VERSION 3.10)
+# project( PI_VISION CXX)
+
+# find_package( OpenCV REQUIRED )
+# include_directories( ${OpenCV_INCLUDE_DIRS} )
+# # find_package( Openmp Openmp )
+# # include_directories( ${Openmp_INCLUDE_DIRS} )
+# add_executable( distance distance_good.cpp)
+# target_link_libraries( distance ${OpenCV_LIBS} )
+# target_link_libraries(distance m wiringPi pthread)
+
 cmake_minimum_required(VERSION 3.10)
 project( PI_VISION CXX)
 
@@ -5,11 +16,9 @@ find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 # find_package( Openmp Openmp )
 # include_directories( ${Openmp_INCLUDE_DIRS} )
-add_executable( distance distance_good.cpp)
-target_link_libraries( distance ${OpenCV_LIBS} )
-target_link_libraries(distance m wiringPi pthread)
-
-
+add_executable( exec distance_good1.cpp)
+target_link_libraries( exec ${OpenCV_LIBS} )
+target_link_libraries(exec m wiringPi pthread)
 
 # cmake_minimum_required(VERSION 3.10)
 # project( PI_VISION C CXX)

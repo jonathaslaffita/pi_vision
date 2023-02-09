@@ -12,6 +12,7 @@
 #include <opencv2/aruco.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 #include <chrono>
+#include <vector>
 
 
 using namespace std;
@@ -49,7 +50,6 @@ float angle_2_pwm = 1000;
 uint8_T idsize;
 
 // Intitializing variables for vision:
-void mainpi(am7_data_out *output);
 
 void am7_init(){
 
@@ -192,79 +192,125 @@ void* second_thread() //Run the optimization code
       
       am7_data_out output1;
       auto start = std::chrono::high_resolution_clock::now();
+      auto start1 = std::chrono::high_resolution_clock::now();
       VideoCapture inputVideo;
       output1.rolling_msg_out = 0.154687;
       inputVideo.open(0);
       
 
-      // Mat cameraMatrix = (Mat_<double>(3,3) <<  662.81531922 ,  0.     ,    462.46163531,  0.  ,       664.52337529 ,291.17616957 ,  0.,           0.    ,       1.       );  //HP
 
-      // Mat distCoeffs =  (Mat_<double>(5,1) <<  -0.13983382 , 0.38984575, -0.00326045 , 0.00090355, -0.41180841 ); //HP
+     Mat cameraMatrix = (Mat_<double>(3,3) <<  662.81241185, 0.00000, 462.4643793, 0.00000, 664.52073289, 291.17703399, 0.00000, 0.00000, 1.00000     );  //HP
 
-      Mat cameraMatrix = (Mat_<double>(3,3) << 2979.92664, 0.0, 949.299955, 0.0, 3007.74876, -303.748996, 0.0, 0.0, 1.0); //PI
+     Mat distCoeffs =  (Mat_<double>(5,1) <<  -0.13983977 , 0.38987987 ,-0.00326027 , 0.00090451, -0.41185575 ); //HP
 
-      Mat distCoeffs =  (Mat_<double>(5,1) <<  0.40244566 ,-0.35272782,  0.01240108 ,-0.00690907 , 0.04986316);   //PI
+    // Mat cameraMatrix = (Mat_<double>(3,3) << 1324.41327, 0.00000, 246.59521, 0.00000, 1422.16168, 162.596409, 0.00000, 0.00000, 1.00000); //PI
+
+    // Mat distCoeffs =  (Mat_<double>(5,1) <<  0.9143256 , -1.91459431 ,-0.09495023 ,-0.08486384,  1.62500132);   //PI
        
-      vector<vector<Point3f>> objPoints{{Point3f(-6.3/2, 0, -6.3/2),Point3f(6.3/2, 0, -63./2), Point3f(-6.3/2, 0 ,6.3/2),Point3f(6.3/2, 0,-6.3/2)},{Point3f(0.0, 6.0, 0),Point3f(15.0, 6.0, 0), Point3f(15.0, 21.0 ,0),Point3f(0.0, 21.0,0)}};//,{Point3f(0.0, 0.0,0),Point3f(5.0, 0.0,0),Point3f(5.0, 5.0,0),Point3f(0.0, 5.0,0)},{Point3f(10.0, 0.0,0),Point3f(15.0, 0.0,0),Point3f(15.0, 5.0,0),Point3f(10.0, 5.0,0)},{Point3f(0.0, 22.0,0),Point3f(5.0, 22.0,0),Point3f(5.0, 27.0,0),Point3f(0.0, 27.0,0)},{Point3f(10.0, 22.0,0),Point3f(15.0, 22.0,0),Point3f(15.0, 27.0,0),Point3f(10.0, 27.0,0)},{Point3f(6.25, 1.25,0),Point3f(8.75, 1.25,0),Point3f(8.75, 3.625,0),Point3f(6.25, 3.625,0)},{Point3f(6.25, 23.25,0),Point3f(8.75, 23.25,0),Point3f(8.75, 25.75,0),Point3f(6.25, 25.75,0)}}; //{Point3f(-6.3/2, 0, -6.3/2),Point3f(6.3/2, 0, -63./2), Point3f(-6.3/2, 0 ,6.3/2),Point3f(6.3/2, 0,-6.3/2)}, ////{Point3f(0.0, 0.0, 6.0), Point3f(15.0, 0.0, 6.0), Point3f(15.0, 0.0, 21.0), Point3f(0.0, 0.0, 21.0)}, {Point3f(0.0, 0.0, 0.0), Point3f(5.0, 0.0, 0.0), Point3f(5.0, 0.0, 5.0), Point3f(0.0, 0.0, 5.0)}, {Point3f(10.0, 0.0, 0.0), Point3f(15.0, 0.0, 0.0), Point3f(15.0, 0.0, 5.0), Point3f(10.0, 0.0, 5.0)}, {Point3f(0.0, 0.0, 22.0), Point3f(5.0, 0.0, 22.0), Point3f(5.0, 0.0, 27.0), Point3f(0.0, 0.0, 27.0)}, {Point3f(10.0, 0.0, 22.0), Point3f(15.0, 0.0, 22.0), Point3f(15.0, 0.0, 27.0), Point3f(10.0, 0.0, 27.0)}, {Point3f(6.25, 0.0, 1.25), Point3f(8.75, 0.0, 1.25), Point3f(8.75, 0.0, 3.625), Point3f(6.25, 0.0, 3.625)}, {Point3f(6.25, 0.0, 23.25), Point3f(8.75, 0.0, 23.25), Point3f(8.75, 0.0, 25.75), Point3f(6.25, 0.0, 25.75)}}
+      vector<vector<Point3f>> objPoints{{Point3f(0.0, 6.0, 0),Point3f(15.0, 6.0, 0), Point3f(15.0, 21.0 ,0),Point3f(0.0, 21.0,0)},{Point3f(0.0, 0.0,0),Point3f(5.0, 0.0,0),Point3f(5.0, 5.0,0),Point3f(0.0, 5.0,0)},{Point3f(10.0, 0.0,0),Point3f(15.0, 0.0,0),Point3f(15.0, 5.0,0),Point3f(10.0, 5.0,0)},{Point3f(0.0, 22.0,0),Point3f(5.0, 22.0,0),Point3f(5.0, 27.0,0),Point3f(0.0, 27.0,0)},{Point3f(10.0, 22.0,0),Point3f(15.0, 22.0,0),Point3f(15.0, 27.0,0),Point3f(10.0, 27.0,0)},{Point3f(6.25, 1.25,0),Point3f(8.75, 1.25,0),Point3f(8.75, 3.625,0),Point3f(6.25, 3.625,0)},{Point3f(6.25, 23.25,0),Point3f(8.75, 23.25,0),Point3f(8.75, 25.75,0),Point3f(6.25, 25.75,0)}}; //{Point3f(-6.3/2, 0, -6.3/2),Point3f(6.3/2, 0, -63./2), Point3f(-6.3/2, 0 ,6.3/2),Point3f(6.3/2, 0,-6.3/2)}, ////{Point3f(0.0, 0.0, 6.0), Point3f(15.0, 0.0, 6.0), Point3f(15.0, 0.0, 21.0), Point3f(0.0, 0.0, 21.0)}, {Point3f(0.0, 0.0, 0.0), Point3f(5.0, 0.0, 0.0), Point3f(5.0, 0.0, 5.0), Point3f(0.0, 0.0, 5.0)}, {Point3f(10.0, 0.0, 0.0), Point3f(15.0, 0.0, 0.0), Point3f(15.0, 0.0, 5.0), Point3f(10.0, 0.0, 5.0)}, {Point3f(0.0, 0.0, 22.0), Point3f(5.0, 0.0, 22.0), Point3f(5.0, 0.0, 27.0), Point3f(0.0, 0.0, 27.0)}, {Point3f(10.0, 0.0, 22.0), Point3f(15.0, 0.0, 22.0), Point3f(15.0, 0.0, 27.0), Point3f(10.0, 0.0, 27.0)}, {Point3f(6.25, 0.0, 1.25), Point3f(8.75, 0.0, 1.25), Point3f(8.75, 0.0, 3.625), Point3f(6.25, 0.0, 3.625)}, {Point3f(6.25, 0.0, 23.25), Point3f(8.75, 0.0, 23.25), Point3f(8.75, 0.0, 25.75), Point3f(6.25, 0.0, 25.75)}}
+      // vector<vector<Point3f>> objPoints{{Point3f(0.0, 6.0, 0),Point3f(15.0, 6.0, 0), Point3f(15.0, 21.0 ,0),Point3f(0.0, 21.0,0)},{Point3f(0.0, 0.0,0),Point3f(5.0, 0.0,0),Point3f(5.0, 5.0,0),Point3f(0.0, 5.0,0)},{Point3f(10.0, 0.0,0),Point3f(15.0, 0.0,0),Point3f(15.0, 5.0,0),Point3f(10.0, 5.0,0)},{Point3f(0.0, 22.0,0),Point3f(5.0, 22.0,0),Point3f(5.0, 27.0,0),Point3f(0.0, 27.0,0)},{Point3f(10.0, 22.0,0),Point3f(15.0, 22.0,0),Point3f(15.0, 27.0,0),Point3f(10.0, 27.0,0)},{Point3f(6.25, 1.25,0),Point3f(8.75, 1.25,0),Point3f(8.75, 3.625,0),Point3f(6.25, 3.625,0)},{Point3f(6.25, 23.25,0),Point3f(8.75, 23.25,0),Point3f(8.75, 25.75,0),Point3f(6.25, 25.75,0)}};
+      // Ptr<aruco::Dictionary> dictionary =aruco::getPredefinedDictionary(aruco::DICT_4X4_50);  //for pi
+      // vector<vector<Point3f>> objPoints{{Point3f(0.0, 6.0, 0),Point3f(15.0, 6.0, 0), Point3f(15.0, 21.0 ,0),Point3f(0.0, 21.0,0)},{Point3f(0.0, 0.0,0),Point3f(5.0, 0.0,0),Point3f(5.0, 5.0,0),Point3f(0.0, 5.0,0)},{Point3f(10.0, 0.0,0),Point3f(15.0, 0.0,0),Point3f(15.0, 5.0,0),Point3f(10.0, 5.0,0)},{Point3f(0.0, 22.0,0),Point3f(5.0, 22.0,0),Point3f(5.0, 27.0,0),Point3f(0.0, 27.0,0)},{Point3f(10.0, 22.0,0),Point3f(15.0, 22.0,0),Point3f(15.0, 27.0,0),Point3f(10.0, 27.0,0)},{Point3f(6.25, 1.25,0),Point3f(8.75, 1.25,0),Point3f(8.75, 3.625,0),Point3f(6.25, 3.625,0)},{Point3f(6.25, 23.25,0),Point3f(8.75, 23.25,0),Point3f(8.75, 25.75,0),Point3f(6.25, 25.75,0)}};
 
-      Ptr<aruco::Dictionary> dictionary =aruco::getPredefinedDictionary(aruco::DICT_4X4_50);  //for pi
-
-      // aruco::DetectorParameters detectorParams = aruco::DetectorParameters(); //not for pi
-      // aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_4X4_50); //not for pi
-      // aruco::ArucoDetector detector(dictionary, detectorParams); //not for pi
+      aruco::DetectorParameters detectorParams = aruco::DetectorParameters(); //not for pi
+      aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_5X5_50); //not for pi
+      aruco::ArucoDetector detector(dictionary, detectorParams); //not for pi
 
       Mat rvecs;
       Mat tvecs;
       Mat prevtvecs = Mat::zeros(3, 1, CV_16S);
       Mat tvecderriv = Mat::zeros(3, 1, CV_16S);
-      cout << "heloo3" << endl;
+      Mat tvecderrivsmooth = Mat::zeros(3, 1, CV_16S);
       Mat Rmatassume0;
+      
+      Mat image, imageCopy;      
+      
+      vector<vector<int>> TVECS{{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0}};
+      vector<int> TIMES{10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10};
+      uint8_T bufft = 0;
+
       while (inputVideo.grab()) {
           
-          Mat image, imageCopy;
+          vector<vector<Point2f>> corners;
+          vector<int> ids;
           inputVideo.retrieve(image);
           image.copyTo(imageCopy);
-          vector<int> ids;
-          vector<vector<Point2f>> corners;
-          bitwise_not(image,imageCopy);
-          // detector.detectMarkers(imageCopy, corners, ids); //not for pi
-          aruco::detectMarkers(image, dictionary, corners, ids); //for pi
+          
+          // bitwise_not(image,imageCopy);
+          detector.detectMarkers(imageCopy, corners, ids); //not for pi
+          // aruco::detectMarkers(imageCopy, dictionary, corners, ids); //for pi
           
           if (ids.size() > 0) {
-              // aruco::drawDetectedMarkers(imageCopy, corners, ids);
+              aruco::drawDetectedMarkers(imageCopy, corners, ids);
               int nMarkers = corners.size();
               vector<Point3f> corners2{};
               vector<Point2f> corners3{};
               for (int i = 0; i < ids.size(); i++) {
-                int idx = ids[i];
-                corners2.push_back(objPoints[idx][0]);
-                corners2.push_back(objPoints[idx][1]);
-                corners2.push_back(objPoints[idx][2]);
-                corners2.push_back(objPoints[idx][3]);
-                corners3.push_back(corners[i][0]);
-                corners3.push_back(corners[i][1]);
-                corners3.push_back(corners[i][2]);
-                corners3.push_back(corners[i][3]);
+              int idx = ids[i];
+              corners2.push_back(objPoints[idx][0]);
+              corners2.push_back(objPoints[idx][1]);
+              corners2.push_back(objPoints[idx][2]);
+              corners2.push_back(objPoints[idx][3]);
+              corners3.push_back(corners[i][0]);
+              corners3.push_back(corners[i][1]);
+              corners3.push_back(corners[i][2]);
+              corners3.push_back(corners[i][3]);
               }
                     
               solvePnPRansac(corners2, corners3, cameraMatrix, distCoeffs, rvecs, tvecs);
-                  
+              
+              
               // Draw axis for each marker
-              // drawFrameAxes(imageCopy, cameraMatrix, distCoeffs, rvecs, tvecs, 10);
-              cout << tvecs << endl;             
-              tvecs.convertTo(tvecs, CV_16S, 10);
+              drawFrameAxes(imageCopy, cameraMatrix, distCoeffs, rvecs, tvecs, 10);
+              // cout << tvecs << endl;             
+              
+              double angle = 45.0 * CV_PI / 180.0;
+              // cout << tvecs << endl;
+              Mat camera_to_body = (cv::Mat_<double>(3, 3) << 1.0, 0.0, 0.0,
+                   0.0, cos(angle), -sin(angle),
+                   0.0, sin(angle), cos(angle));
 
+              tvecs = camera_to_body * tvecs ;
+
+              cout << "new:" << endl;
+              cout << tvecs << endl;
+
+              tvecs.convertTo(tvecs, CV_16S, 10);
               auto stop = high_resolution_clock::now();
               auto duration = duration_cast<milliseconds>(stop - start);
-              cout << "frequency vision " << 1000/duration.count() << "Hz" << endl;
-              cout << tvecs << endl;
-              // cout << tvecderriv << endl;
-              prevtvecs = tvecs;
+              // cout << "frequency vision " << 1000/duration.count() << "Hz" << endl;
+              
               start = stop;
 
+              // cout << prevtvecs << endl;
               tvecderriv = 1000*(tvecs - prevtvecs)/duration.count();
-              tvecderriv.convertTo(tvecderriv, CV_16S, 10);
+              // cout << tvecderriv << endl;
+              prevtvecs = tvecs;
+              //BUFFER IMPLEMENTATION
+              // auto durations = duration_cast<milliseconds>(stop-start1);
+              // TVECS[bufft][0] = 2;//output1.pi_translation_x;
+              // TVECS[bufft][1] = 2;//output1.pi_translation_y;
+              // TVECS[bufft][2] = 2;//output1.pi_translation_z;
+              // TIMES[bufft] = durations.count();
 
+              // if(bufft ==18){
+                           
+              //   // tvecderrivsmooth = (TVECS[bufft]-TVECS[0])/(TIMES[bufft]-TIMES[0]);
+              //   bufft = 0;
+              // }
+              // else{
+              //   // tvecderrivsmooth = (TVECS[bufft]-TVECS[bufft+1])/(TIMES[bufft]-TIMES[bufft+1]);
+              //   bufft ++;
+              // }
+              
+              // body rotation:
+                           
+              
+              
+              
+              tvecderriv.convertTo(tvecderriv, CV_16S, 10);
+              
+              
               //ROTATIONS
               Rodrigues(rvecs, Rmatassume0);
               // cout << "RMAT" << Rmatassume0 << endl;
@@ -288,28 +334,28 @@ void* second_thread() //Run the optimization code
                   z = 0;
               }
 
-              cout << "yaw1" <<z<< endl;
+              // cout << "yaw1" <<z<< endl;
               //////////////////////////////////////////////////////////////
-              // int waitTime = 10;
-              // // Show resulting image and close window
-              // imshow("out", imageCopy);
-              // char key = (char) waitKey(waitTime);
-              // if (key == 27)
-              //     break;
+              int waitTime = 10;
+              // Show resulting image and close window
+              imshow("out", imageCopy);
+              char key = (char) waitKey(waitTime);
+              if (key == 27)
+                  break;
      
-              output1.pi_translation_x = tvecs.at<int16_t>(0);
-              output1.pi_translation_y = tvecs.at<int16_t>(1);
-              output1.pi_translation_z = tvecs.at<int16_t>(2);
+              output1.pi_translation_x = tvecs.at<int16_t>(2);
+              output1.pi_translation_y = tvecs.at<int16_t>(0);
+              output1.pi_translation_z = tvecs.at<int16_t>(1);
               output1.pi_rotation_x = (int)x; //rvecs.at<int16_t>(0);
               output1.pi_rotation_y = (int)y; //rvecs.at<int16_t>(1);
               output1.pi_rotation_z = (int)z; //rvecs.at<int16_t>(2);
-              output1.pi_translation_speed_x = tvecderriv.at<int16_t>(0);
-              output1.pi_translation_speed_y = tvecderriv.at<int16_t>(1);
-              output1.pi_translation_speed_z = tvecderriv.at<int16_t>(2);
-              
+              output1.pi_translation_speed_x = tvecderriv.at<int16_t>(2);
+              output1.pi_translation_speed_y = tvecderriv.at<int16_t>(0);
+              output1.pi_translation_speed_z = tvecderriv.at<int16_t>(1);
+              cout << "x" << tvecderriv.at<int16_t>(0) << "x" << tvecderriv.at<int16_t>(1) << "x" << tvecderriv.at<int16_t>(2);
               }
         
-        cout <<"int" << output1.pi_rotation_z << endl;
+        // cout <<"int" << output1.pi_rotation_z << endl;
         output1.pivision_flag = ids.size();
         // cout << "flag:" << unsigned(idsize) << endl;
         // cout << "flagleft:" << unsigned(output1.pivision_flag) << endl;
@@ -343,15 +389,15 @@ void* second_thread() //Run the optimization code
 int main() {
 
   //Initialize the serial 
-  am7_init();
-
+  // am7_init();
+  second_thread();
   // make threads
-  thread thread1(first_thread);
-  thread thread2(second_thread);
+  // thread thread1(first_thread);
+  // thread thread2(second_thread);
 
-  // wait for them to finish
-  thread1.join();
-  thread2.join(); 
+  // // wait for them to finish
+  // thread1.join();
+  // thread2.join(); 
 
   //Close the serial and clean the variables 
   fflush (stdout);
