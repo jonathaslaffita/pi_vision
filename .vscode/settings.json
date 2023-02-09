@@ -8,6 +8,10 @@
         "deque": "cpp",
         "string": "cpp",
         "vector": "cpp",
-        "chrono": "cpp"
-    }
+        "chrono": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp",
+        "cmath": "cpp"
+    },
+    "cmake.configureOnOpen": false
 }
