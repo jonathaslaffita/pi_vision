@@ -199,21 +199,27 @@ void* second_thread() //Run the optimization code
       
 
 
-     Mat cameraMatrix = (Mat_<double>(3,3) <<  662.81241185, 0.00000, 462.4643793, 0.00000, 664.52073289, 291.17703399, 0.00000, 0.00000, 1.00000     );  //HP
+    //  Mat cameraMatrix = (Mat_<double>(3,3) <<  662.81241185, 0.00000, 462.4643793, 0.00000, 664.52073289, 291.17703399, 0.00000, 0.00000, 1.00000     );  //HP
 
-     Mat distCoeffs =  (Mat_<double>(5,1) <<  -0.13983977 , 0.38987987 ,-0.00326027 , 0.00090451, -0.41185575 ); //HP
+    //  Mat distCoeffs =  (Mat_<double>(5,1) <<  -0.13983977 , 0.38987987 ,-0.00326027 , 0.00090451, -0.41185575 ); //HP
+     
+     Mat cameraMatrix = (Mat_<double>(3,3) <<  1258.11317, 0.00000000, 964.309657, 0.00000000, 1257.06475, 524.183559, 0.00000000, 0.00000000, 1.00000000  );  //DELL
+
+     Mat distCoeffs =  (Mat_<double>(5,1) <<  0.23926954 ,-1.05468943, -0.00439541, -0.00167863 , 1.03336388); //DELL
 
     // Mat cameraMatrix = (Mat_<double>(3,3) << 1324.41327, 0.00000, 246.59521, 0.00000, 1422.16168, 162.596409, 0.00000, 0.00000, 1.00000); //PI
 
     // Mat distCoeffs =  (Mat_<double>(5,1) <<  0.9143256 , -1.91459431 ,-0.09495023 ,-0.08486384,  1.62500132);   //PI
        
-      vector<vector<Point3f>> objPoints{{Point3f(0.0, 6.0, 0),Point3f(15.0, 6.0, 0), Point3f(15.0, 21.0 ,0),Point3f(0.0, 21.0,0)},{Point3f(0.0, 0.0,0),Point3f(5.0, 0.0,0),Point3f(5.0, 5.0,0),Point3f(0.0, 5.0,0)},{Point3f(10.0, 0.0,0),Point3f(15.0, 0.0,0),Point3f(15.0, 5.0,0),Point3f(10.0, 5.0,0)},{Point3f(0.0, 22.0,0),Point3f(5.0, 22.0,0),Point3f(5.0, 27.0,0),Point3f(0.0, 27.0,0)},{Point3f(10.0, 22.0,0),Point3f(15.0, 22.0,0),Point3f(15.0, 27.0,0),Point3f(10.0, 27.0,0)},{Point3f(6.25, 1.25,0),Point3f(8.75, 1.25,0),Point3f(8.75, 3.625,0),Point3f(6.25, 3.625,0)},{Point3f(6.25, 23.25,0),Point3f(8.75, 23.25,0),Point3f(8.75, 25.75,0),Point3f(6.25, 25.75,0)}}; //{Point3f(-6.3/2, 0, -6.3/2),Point3f(6.3/2, 0, -63./2), Point3f(-6.3/2, 0 ,6.3/2),Point3f(6.3/2, 0,-6.3/2)}, ////{Point3f(0.0, 0.0, 6.0), Point3f(15.0, 0.0, 6.0), Point3f(15.0, 0.0, 21.0), Point3f(0.0, 0.0, 21.0)}, {Point3f(0.0, 0.0, 0.0), Point3f(5.0, 0.0, 0.0), Point3f(5.0, 0.0, 5.0), Point3f(0.0, 0.0, 5.0)}, {Point3f(10.0, 0.0, 0.0), Point3f(15.0, 0.0, 0.0), Point3f(15.0, 0.0, 5.0), Point3f(10.0, 0.0, 5.0)}, {Point3f(0.0, 0.0, 22.0), Point3f(5.0, 0.0, 22.0), Point3f(5.0, 0.0, 27.0), Point3f(0.0, 0.0, 27.0)}, {Point3f(10.0, 0.0, 22.0), Point3f(15.0, 0.0, 22.0), Point3f(15.0, 0.0, 27.0), Point3f(10.0, 0.0, 27.0)}, {Point3f(6.25, 0.0, 1.25), Point3f(8.75, 0.0, 1.25), Point3f(8.75, 0.0, 3.625), Point3f(6.25, 0.0, 3.625)}, {Point3f(6.25, 0.0, 23.25), Point3f(8.75, 0.0, 23.25), Point3f(8.75, 0.0, 25.75), Point3f(6.25, 0.0, 25.75)}}
+      // vector<vector<Point3f>> objPoints{{Point3f(0.0, 6.0, 0),Point3f(15.0, 6.0, 0), Point3f(15.0, 21.0 ,0),Point3f(0.0, 21.0,0)},{Point3f(0.0, 0.0,0),Point3f(5.0, 0.0,0),Point3f(5.0, 5.0,0),Point3f(0.0, 5.0,0)},{Point3f(10.0, 0.0,0),Point3f(15.0, 0.0,0),Point3f(15.0, 5.0,0),Point3f(10.0, 5.0,0)},{Point3f(0.0, 22.0,0),Point3f(5.0, 22.0,0),Point3f(5.0, 27.0,0),Point3f(0.0, 27.0,0)},{Point3f(10.0, 22.0,0),Point3f(15.0, 22.0,0),Point3f(15.0, 27.0,0),Point3f(10.0, 27.0,0)},{Point3f(6.25, 1.25,0),Point3f(8.75, 1.25,0),Point3f(8.75, 3.625,0),Point3f(6.25, 3.625,0)},{Point3f(6.25, 23.25,0),Point3f(8.75, 23.25,0),Point3f(8.75, 25.75,0),Point3f(6.25, 25.75,0)}}; //{Point3f(-6.3/2, 0, -6.3/2),Point3f(6.3/2, 0, -63./2), Point3f(-6.3/2, 0 ,6.3/2),Point3f(6.3/2, 0,-6.3/2)}, ////{Point3f(0.0, 0.0, 6.0), Point3f(15.0, 0.0, 6.0), Point3f(15.0, 0.0, 21.0), Point3f(0.0, 0.0, 21.0)}, {Point3f(0.0, 0.0, 0.0), Point3f(5.0, 0.0, 0.0), Point3f(5.0, 0.0, 5.0), Point3f(0.0, 0.0, 5.0)}, {Point3f(10.0, 0.0, 0.0), Point3f(15.0, 0.0, 0.0), Point3f(15.0, 0.0, 5.0), Point3f(10.0, 0.0, 5.0)}, {Point3f(0.0, 0.0, 22.0), Point3f(5.0, 0.0, 22.0), Point3f(5.0, 0.0, 27.0), Point3f(0.0, 0.0, 27.0)}, {Point3f(10.0, 0.0, 22.0), Point3f(15.0, 0.0, 22.0), Point3f(15.0, 0.0, 27.0), Point3f(10.0, 0.0, 27.0)}, {Point3f(6.25, 0.0, 1.25), Point3f(8.75, 0.0, 1.25), Point3f(8.75, 0.0, 3.625), Point3f(6.25, 0.0, 3.625)}, {Point3f(6.25, 0.0, 23.25), Point3f(8.75, 0.0, 23.25), Point3f(8.75, 0.0, 25.75), Point3f(6.25, 0.0, 25.75)}}
       // vector<vector<Point3f>> objPoints{{Point3f(0.0, 6.0, 0),Point3f(15.0, 6.0, 0), Point3f(15.0, 21.0 ,0),Point3f(0.0, 21.0,0)},{Point3f(0.0, 0.0,0),Point3f(5.0, 0.0,0),Point3f(5.0, 5.0,0),Point3f(0.0, 5.0,0)},{Point3f(10.0, 0.0,0),Point3f(15.0, 0.0,0),Point3f(15.0, 5.0,0),Point3f(10.0, 5.0,0)},{Point3f(0.0, 22.0,0),Point3f(5.0, 22.0,0),Point3f(5.0, 27.0,0),Point3f(0.0, 27.0,0)},{Point3f(10.0, 22.0,0),Point3f(15.0, 22.0,0),Point3f(15.0, 27.0,0),Point3f(10.0, 27.0,0)},{Point3f(6.25, 1.25,0),Point3f(8.75, 1.25,0),Point3f(8.75, 3.625,0),Point3f(6.25, 3.625,0)},{Point3f(6.25, 23.25,0),Point3f(8.75, 23.25,0),Point3f(8.75, 25.75,0),Point3f(6.25, 25.75,0)}};
+      // vector<vector<Point3f>> objPoints{{Point3f(0,0,0),Point3f(0,0,0),Point3f(0,0,0),Point3f(0,0,0)},{Point3f(360.648,-30,724),Point3f(300.648,-30,724),Point3f(300.648,30,724),Point3f(360.648,30,724)},{Point3f(0,0,0),Point3f(0,0,0),Point3f(0,0,0),Point3f(0,0,0)},{Point3f(-199.6,-14.7,725),Point3f(-229,-14.7,725),Point3f(-229,14.7,725)},{Point3f(-199.6,14.7,725),Point3f(229,-14.7,725),Point3f(199.6,-14.7,725),Point3f(199.6,14.7,725)},{Point3f(229,14.7,725),Point3f(0,0,0),Point3f(0,0,0),Point3f(0,0,0)},{Point3f(0,0,0),Point3f(-90,-9.8,725),Point3f(-109.6,-9.8,725),Point3f(-109.6,9.8,725)},{Point3f(-90,9.8,725),Point3f(-300.648,-30,724),Point3f(-360.648,-30,724),Point3f(-360.648,30,724)},{Point3f(-300.648,30,724),Point3f(0,0,0),Point3f(0,0,0),Point3f(0,0,0)},{Point3f(0,0,0),Point3f(20,2.834,683.882),Point3f(-20,2.834,683.882),Point3f(-20,31.118,712.166)},{Point3f(20,31.118,712.166),Point3f(109.6,-9.8,725),Point3f(90,-9.8,725),Point3f(90,9.8,725)},{Point3f(109.6,9.8,725),Point3f(0,0,0),Point3f(0,0,0),Point3f(0,0,0)},{Point3f(0,0,0),Point3f(0,0,0),Point3f(0,0,0),Point3f(0,0,0),Point3f(0,0,0)},{Point3f(10,2.728,258.13),Point3f(-10,2.728,258.13),Point3f(-10,16.87,272.272),Point3f(10,16.87,272.272)}};
+      vector<vector<Point3f>> objPoints{{Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1)},{Point3f(-360.648,-30,724),Point3f(-300.648,-30,724),Point3f(-300.648,30,724),Point3f(-360.648,30,724)},{Point3f(199.6,-14.7,725),Point3f(229,-14.7,725),Point3f(229,14.7,725),Point3f(199.6,14.7,725)},{Point3f(199.6,-14.7,725),Point3f(229,-14.7,725),Point3f(229,14.7,725),Point3f(199.6,14.7,725)},{Point3f(-229,-14.7,725),Point3f(-199.6,-14.7,725),Point3f(-199.6,14.7,725),Point3f(-229,14.7,725)},{Point3f(-89.4,-54.7,360),Point3f(-60,-54.7,360),Point3f(-60,-25.3,360),Point3f(-89.4,-25.3,360)},{Point3f(90,-9.8,725),Point3f(109.6,-9.8,725),Point3f(109.6,9.8,725),Point3f(90,9.8,725)},{Point3f(300.648,-30,724),Point3f(360.648,-30,724),Point3f(360.648,30,724),Point3f(300.648,30,724)},{Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1)},{Point3f(-20,2.834,683.882),Point3f(20,2.834,683.882),Point3f(20,31.118,712.166),Point3f(-20,31.118,712.166)},{Point3f(-109.6,-9.8,725),Point3f(-90,-9.8,725),Point3f(-90,9.8,725),Point3f(-109.6,9.8,725)},{Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1)},{Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1)},{Point3f(-10,2.728,258.13),Point3f(10,2.728,258.13),Point3f(10,16.87,272.272),Point3f(-10,16.87,272.272)}};
       // Ptr<aruco::Dictionary> dictionary =aruco::getPredefinedDictionary(aruco::DICT_4X4_50);  //for pi
       // vector<vector<Point3f>> objPoints{{Point3f(0.0, 6.0, 0),Point3f(15.0, 6.0, 0), Point3f(15.0, 21.0 ,0),Point3f(0.0, 21.0,0)},{Point3f(0.0, 0.0,0),Point3f(5.0, 0.0,0),Point3f(5.0, 5.0,0),Point3f(0.0, 5.0,0)},{Point3f(10.0, 0.0,0),Point3f(15.0, 0.0,0),Point3f(15.0, 5.0,0),Point3f(10.0, 5.0,0)},{Point3f(0.0, 22.0,0),Point3f(5.0, 22.0,0),Point3f(5.0, 27.0,0),Point3f(0.0, 27.0,0)},{Point3f(10.0, 22.0,0),Point3f(15.0, 22.0,0),Point3f(15.0, 27.0,0),Point3f(10.0, 27.0,0)},{Point3f(6.25, 1.25,0),Point3f(8.75, 1.25,0),Point3f(8.75, 3.625,0),Point3f(6.25, 3.625,0)},{Point3f(6.25, 23.25,0),Point3f(8.75, 23.25,0),Point3f(8.75, 25.75,0),Point3f(6.25, 25.75,0)}};
 
       aruco::DetectorParameters detectorParams = aruco::DetectorParameters(); //not for pi
-      aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_5X5_50); //not for pi
+      aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_4X4_50); //not for pi
       aruco::ArucoDetector detector(dictionary, detectorParams); //not for pi
 
       Mat rvecs;
@@ -236,7 +242,7 @@ void* second_thread() //Run the optimization code
           inputVideo.retrieve(image);
           image.copyTo(imageCopy);
           
-          // bitwise_not(image,imageCopy);
+          bitwise_not(image,imageCopy);
           detector.detectMarkers(imageCopy, corners, ids); //not for pi
           // aruco::detectMarkers(imageCopy, dictionary, corners, ids); //for pi
           
@@ -247,6 +253,7 @@ void* second_thread() //Run the optimization code
               vector<Point2f> corners3{};
               for (int i = 0; i < ids.size(); i++) {
               int idx = ids[i];
+              cout << idx << endl;
               corners2.push_back(objPoints[idx][0]);
               corners2.push_back(objPoints[idx][1]);
               corners2.push_back(objPoints[idx][2]);
@@ -255,8 +262,14 @@ void* second_thread() //Run the optimization code
               corners3.push_back(corners[i][1]);
               corners3.push_back(corners[i][2]);
               corners3.push_back(corners[i][3]);
+              cout << idx << endl;
+
               }
-                    
+
+              // cout << ids << endl;
+              cout << corners2 << endl;
+              cout << corners3 << endl;  
+
               solvePnPRansac(corners2, corners3, cameraMatrix, distCoeffs, rvecs, tvecs);
               
               

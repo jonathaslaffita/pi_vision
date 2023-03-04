@@ -27,12 +27,12 @@ int main()
   }
  
  
-  // Extracting path of individual image stored in a given directory
-  vector<String> images;
-  // Path of the folder containing checkerboard images
-  string path = "./images/*.jpg";
+  // // Extracting path of individual image stored in a given directory
+  // vector<String> images;
+  // // Path of the folder containing checkerboard images
+  // string path = "./images/*.jpg";
  
-  glob(path, images);
+  // glob(path, images);
  
   Mat frame, gray;
   // vector to store the pixel coordinates of detected checker board corners 
@@ -49,7 +49,7 @@ while (inputVideo.grab()) {
  
     // Finding checker board corners
     // If desired number of corners are found in the image then success = true  
-    success = findChessboardCorners(gray, Size(CHECKERBOARD[0], CHECKERBOARD[1]),    CALIB_CB_ADAPTIVE_THRESH + CALIB_CB_NORMALIZE_IMAGE
+    success = findChessboardCorners(gray, (Size(CHECKERBOARD[0], CHECKERBOARD[1])), CALIB_CB_ADAPTIVE_THRESH + CALIB_CB_NORMALIZE_IMAGE
         + CALIB_CB_FAST_CHECK);
      
     /* 

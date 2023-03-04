@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/calib.dir/calib.cpp.o"
+  "CMakeFiles/calib.dir/calib.cpp.o.d"
   "calib"
   "calib.pdb"
 )
