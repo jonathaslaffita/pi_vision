@@ -267,7 +267,7 @@ void* second_thread() //Run the optimization code
               for (int i = 0; i < ids.size(); i++) {
               int idx = ids[i];
               cout << idx << endl;
-              if(idx<13){
+              if(idx<14){
               corners2.push_back(objPoints[idx][0]);
               corners2.push_back(objPoints[idx][1]);
               corners2.push_back(objPoints[idx][2]);
