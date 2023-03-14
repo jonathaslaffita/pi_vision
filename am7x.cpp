@@ -193,19 +193,26 @@ void* second_thread() //Run the optimization code
       am7_data_out output1;
       auto start = std::chrono::high_resolution_clock::now();
       auto start1 = std::chrono::high_resolution_clock::now();
-      VideoCapture inputVideo;
-      output1.rolling_msg_out = 0.154687;
-      inputVideo.open(0);
+      VideoCapture inputVideo(0);
       
+      output1.rolling_msg_out = 0.154687;
+      // inputVideo.open(0);
 
+      int saveimageid = 2767;
+      
+      inputVideo.set(CAP_PROP_AUTO_EXPOSURE, 3);
+      inputVideo.set(CAP_PROP_AUTO_EXPOSURE, 1);
+      inputVideo.set(CAP_PROP_EXPOSURE, 30);
+      inputVideo.set(CAP_PROP_FRAME_WIDTH , 640);
+      inputVideo.set(CAP_PROP_FRAME_HEIGHT , 480);
 
     //  Mat cameraMatrix = (Mat_<double>(3,3) <<  662.81241185, 0.00000, 462.4643793, 0.00000, 664.52073289, 291.17703399, 0.00000, 0.00000, 1.00000     );  //HP
 
     //  Mat distCoeffs =  (Mat_<double>(5,1) <<  -0.13983977 , 0.38987987 ,-0.00326027 , 0.00090451, -0.41185575 ); //HP
      
-     Mat cameraMatrix = (Mat_<double>(3,3) <<  1258.11317, 0.00000000, 964.309657, 0.00000000, 1257.06475, 524.183559, 0.00000000, 0.00000000, 1.00000000  );  //DELL
+    //  Mat cameraMatrix = (Mat_<double>(3,3) <<  1258.11317, 0.00000000, 964.309657, 0.00000000, 1257.06475, 524.183559, 0.00000000, 0.00000000, 1.00000000  );  //DELL
 
-     Mat distCoeffs =  (Mat_<double>(5,1) <<  0.23926954 ,-1.05468943, -0.00439541, -0.00167863 , 1.03336388); //DELL
+    //  Mat distCoeffs =  (Mat_<double>(5,1) <<  0.23926954 ,-1.05468943, -0.00439541, -0.00167863 , 1.03336388); //DELL
 
     // Mat cameraMatrix = (Mat_<double>(3,3) << 1324.41327, 0.00000, 246.59521, 0.00000, 1422.16168, 162.596409, 0.00000, 0.00000, 1.00000); //PI old
 
@@ -214,6 +221,10 @@ void* second_thread() //Run the optimization code
     // Mat cameraMatrix = (Mat_<double>(3,3) << 2626.19801, 0.00000, 1596.94839, 0.00000, 2603.25770, 1276.43695 , 0.00000, 0.00000, 1.00000 ); //1324.41327, 0.00000, 246.59521, 0.00000, 1422.16168, 162.596409, 0.00000, 0.00000, 1.00000); //PI
 
     // Mat distCoeffs =  (Mat_<double>(5,1) <<  0.0345456336, 1.21214111, 0.00186630124, -0.00976556217, -4.42537856);  //0.9143256 , -1.91459431 ,-0.09495023 ,-0.08486384,  1.62500132);   //PI
+
+    Mat cameraMatrix = (Mat_<double>(3,3) << 2626.19801/5.125, 0.00000, 1596.94839/5.125, 0.00000, 2603.25770/5.125, 1276.43695/5.125 , 0.00000, 0.00000, 1.00000 ); //1324.41327, 0.00000, 246.59521, 0.00000, 1422.16168, 162.596409, 0.00000, 0.00000, 1.00000); //small res
+
+    Mat distCoeffs =  (Mat_<double>(5,1) <<  0.0345456336, 1.21214111, 0.00186630124, -0.00976556217, -4.42537856);  //0.9143256 , -1.91459431 ,-0.09495023 ,-0.08486384,  1.62500132);   //small res
        
       vector<vector<Point3f>> objPoints{{Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1)},
                                         {Point3f(-360.648,-30,724),Point3f(-300.648,-30,724),Point3f(-300.648,30,724),Point3f(-360.648,30,724)},
@@ -230,38 +241,43 @@ void* second_thread() //Run the optimization code
                                         {Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1)},
                                         {Point3f(-10,2.728,258.13),Point3f(10,2.728,258.13),Point3f(10,16.87,272.272),Point3f(-10,16.87,272.272)}};
       
-      // Ptr<aruco::Dictionary> dictionary =aruco::getPredefinedDictionary(aruco::DICT_4X4_50);  //for pi
+      Ptr<aruco::Dictionary> dictionary =aruco::getPredefinedDictionary(aruco::DICT_4X4_50);  //for pi
      
-      aruco::DetectorParameters detectorParams = aruco::DetectorParameters(); //not for pi
-      aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_4X4_50); //not for pi
-      aruco::ArucoDetector detector(dictionary, detectorParams); //not for pi
+      // aruco::DetectorParameters detectorParams = aruco::DetectorParameters(); //not for pi
+      // aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_4X4_50); //not for pi
+      // aruco::ArucoDetector detector(dictionary, detectorParams); //not for pi
 
-      Mat rvecs;
-      Mat tvecs;
-      Mat prevtvecs = Mat::zeros(3, 1, CV_16S);
+      Mat rvecs = Mat::zeros(3, 1, CV_64F);
+      Mat tvecs = Mat::zeros(3, 1, CV_64F);
+      Mat prevtvecs = Mat::zeros(3, 1, CV_64F);
       Mat tvecderriv = Mat::zeros(3, 1, CV_16S);
       Mat tvecderrivsmooth = Mat::zeros(3, 1, CV_16S);
       Mat Rmatassume0;
+      Mat tvecs1;
+      Mat rvecs1;
       
       Mat image, imageCopy;      
       
-      vector<vector<int>> TVECS{{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0}};
-      vector<int> TIMES{10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10};
-      uint8_T bufft = 0;
+      // vector<vector<int>> TVECS{{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0}};
+      // vector<int> TIMES{10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10};
+      // uint8_T bufft = 0;
 
       while (inputVideo.grab()) {
-          
           vector<vector<Point2f>> corners;
           vector<int> ids;
-          inputVideo.retrieve(image);
+          inputVideo.read(image);
           image.copyTo(imageCopy);
-          
           bitwise_not(image,imageCopy);
-          detector.detectMarkers(imageCopy, corners, ids); //not for pi
-          // aruco::detectMarkers(imageCopy, dictionary, corners, ids); //for pi
-          
+          // detector.detectMarkers(imageCopy, corners, ids); //not for pi
+
+          //auto start1 = std::chrono::high_resolution_clock::now();
+          aruco::detectMarkers(imageCopy, dictionary, corners, ids); //for pi
+          //auto stop1 = high_resolution_clock::now();
+          //auto duration1 = duration_cast<milliseconds>(stop1 - start1);
+          //cout << "frequency aruco   " << 1000/duration1.count() << "Hz" << endl;
+              
           if (ids.size() > 2) {
-              aruco::drawDetectedMarkers(imageCopy, corners, ids);
+              aruco::drawDetectedMarkers(image, corners, ids);
               int nMarkers = corners.size();
               vector<Point3f> corners2{};
               vector<Point2f> corners3{};
@@ -284,27 +300,31 @@ void* second_thread() //Run the optimization code
               // cout << ids << endl;
               // cout << corners2 << endl;
               // cout << corners3 << endl;  
+              
+              solvePnP(corners2, corners3, cameraMatrix, distCoeffs, rvecs, tvecs, 1);
+              
+              rvecs1 =rvecs;
+              tvecs1 = tvecs;
 
-              solvePnPRansac(corners2, corners3, cameraMatrix, distCoeffs, rvecs, tvecs);
-              
-              
+              cout << tvecs << endl;
               // Draw axis for each marker
-              drawFrameAxes(imageCopy, cameraMatrix, distCoeffs, rvecs, tvecs, 10);
+              drawFrameAxes(image, cameraMatrix, distCoeffs, rvecs, tvecs, 10);
               // cout << tvecs << endl;             
               
-              double angle = 0.0 * CV_PI / 180.0;
-               cout << tvecs << endl;
+              double angle = 18 * CV_PI / 180.0;
+              //  cout << tvecs << endl;
               Mat camera_to_body = (cv::Mat_<double>(3, 3) << 
                   1.0, 0.0, 0.0,
                    0.0, cos(angle), -sin(angle),
                    0.0, sin(angle), cos(angle));
 
-              tvecs = camera_to_body * tvecs ;
+              tvecs1 = camera_to_body * tvecs1 ;
 
               cout << "new:" << endl;
-              cout << tvecs << endl;
+              cout << tvecs1 << endl;
 
-              tvecs.convertTo(tvecs, CV_16S, 10);
+              tvecs1.convertTo(tvecs1, CV_16S, 10);
+              cout << tvecs1 << endl;
               auto stop = high_resolution_clock::now();
               auto duration = duration_cast<milliseconds>(stop - start);
               cout << "frequency vision " << 1000/duration.count() << "Hz" << endl;
@@ -312,9 +332,9 @@ void* second_thread() //Run the optimization code
               start = stop;
 
               // cout << prevtvecs << endl;
-              tvecderriv = 1000*(tvecs - prevtvecs)/duration.count();
+              // tvecderriv = 1000*(tvecs1 - prevtvecs)/duration.count();
               // cout << tvecderriv << endl;
-              prevtvecs = tvecs;
+              prevtvecs = tvecs1;
               //BUFFER IMPLEMENTATION
               // auto durations = duration_cast<milliseconds>(stop-start1);
               // TVECS[bufft][0] = 2;//output1.pi_translation_x;
@@ -341,7 +361,7 @@ void* second_thread() //Run the optimization code
               
               
               //ROTATIONS
-              Rodrigues(rvecs, Rmatassume0);
+              Rodrigues(rvecs1, Rmatassume0);
               // cout << "RMAT" << Rmatassume0 << endl;
               
               //////////////////////////////////////
@@ -365,29 +385,35 @@ void* second_thread() //Run the optimization code
 
               // cout << "yaw1" <<z<< endl;
               //////////////////////////////////////////////////////////////
-              int waitTime = 10;
-              // Show resulting image and close window
-              imshow("out", imageCopy);
-              char key = (char) waitKey(waitTime);
-              if (key == 27)
-                  break;
-     
-              output1.pi_translation_x = tvecs.at<int16_t>(2);
-              output1.pi_translation_y = tvecs.at<int16_t>(0);
-              output1.pi_translation_z = tvecs.at<int16_t>(1);
-              output1.pi_rotation_x = (int)x; //rvecs.at<int16_t>(0);
-              output1.pi_rotation_y = (int)y; //rvecs.at<int16_t>(1);
-              output1.pi_rotation_z = (int)z; //rvecs.at<int16_t>(2);
+              // int waitTime = 10;
+              // // Show resulting image and close window
+              // imshow("out", imageCopy);
+              // char key = (char) waitKey(waitTime);
+              // if (key == 27)
+              //     break;
+              
+              output1.pi_translation_x = tvecs1.at<int16_t>(2);
+              output1.pi_translation_y = tvecs1.at<int16_t>(0);
+              output1.pi_translation_z = tvecs1.at<int16_t>(1);
+              output1.pi_rotation_x = (int)x; //rvecs1.at<int16_t>(0);
+              output1.pi_rotation_y = (int)y; //rvecs1.at<int16_t>(1);
+              output1.pi_rotation_z = (int)z; //rvecs1.at<int16_t>(2);
               output1.pi_translation_speed_x = tvecderriv.at<int16_t>(2);
               output1.pi_translation_speed_y = tvecderriv.at<int16_t>(0);
               output1.pi_translation_speed_z = tvecderriv.at<int16_t>(1);
               // cout << "x" << tvecderriv.at<int16_t>(0) << "x" << tvecderriv.at<int16_t>(1) << "x" << tvecderriv.at<int16_t>(2);
-              }
-        
+              cout << output1.pi_translation_x << endl;
+
+        stringstream ss;
+        ss << "check/cyberzoo" << saveimageid << ".jpeg";
+        string s = ss.str();
+        imwrite(s,image);
+        saveimageid ++;
+          
         // cout <<"int" << output1.pi_rotation_z << endl;
         output1.pivision_flag = ids.size();
         // cout << "flag:" << unsigned(idsize) << endl;
-        // cout << "flagleft:" << unsigned(output1.pivision_flag) << endl;
+        // cout << "flagleft:" << unsigned(output1.pivision_flag) << endl;/home/jonathas/pi_vision/exec
 
         extra_data_out_copy[0] = 1.453;
         extra_data_out_copy[1] = 1.23423; 
@@ -397,7 +423,7 @@ void* second_thread() //Run the optimization code
         mutex_am7.unlock(); 
         // writing_routine();
       }
-      
+      }
 
     //Print received data if needed
     // if(verbose_received_data){
@@ -418,15 +444,15 @@ void* second_thread() //Run the optimization code
 int main() {
 
   //Initialize the serial 
-  // am7_init();
-  second_thread();
+  am7_init();
+  // second_thread();
   // make threads
-  // thread thread1(first_thread);
-  // thread thread2(second_thread);
+  thread thread1(first_thread);
+  thread thread2(second_thread);
 
   // // wait for them to finish
-  // thread1.join();
-  // thread2.join(); 
+  thread1.join();
+  thread2.join(); 
 
   //Close the serial and clean the variables 
   fflush (stdout);

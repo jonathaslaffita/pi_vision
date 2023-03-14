@@ -24,7 +24,7 @@
 //Define the baudrate for the module and the starting byte 
 #define START_BYTE 0x9B  //1st start block identifier byte
 #define BAUDRATE_AM7 460800 //Define the baudrate
-#define MAX_FREQUENCY_MSG_OUT 35 //Define the maximum message output frequency
+#define MAX_FREQUENCY_MSG_OUT 50 //Define the maximum message output frequency
 
 //Communication structures
 struct  __attribute__((__packed__)) am7_data_out {
