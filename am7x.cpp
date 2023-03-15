@@ -249,7 +249,7 @@ void* second_thread() //Run the optimization code
 
       Mat rvecs = Mat::zeros(3, 1, CV_64F);
       Mat tvecs = Mat::zeros(3, 1, CV_64F);
-      Mat prevtvecs = Mat::zeros(3, 1, CV_64F);
+      Mat prevtvecs = Mat::zeros(3, 1, CV_16S);
       Mat tvecderriv = Mat::zeros(3, 1, CV_16S);
       Mat tvecderrivsmooth = Mat::zeros(3, 1, CV_16S);
       Mat Rmatassume0;
@@ -265,7 +265,7 @@ void* second_thread() //Run the optimization code
       while (inputVideo.grab()) {
           vector<vector<Point2f>> corners;
           vector<int> ids;
-          inputVideo.read(image);
+          inputVideo.retrieve(image);
           image.copyTo(imageCopy);
           bitwise_not(image,imageCopy);
           // detector.detectMarkers(imageCopy, corners, ids); //not for pi
@@ -276,136 +276,141 @@ void* second_thread() //Run the optimization code
           //auto duration1 = duration_cast<milliseconds>(stop1 - start1);
           //cout << "frequency aruco   " << 1000/duration1.count() << "Hz" << endl;
               
-          if (ids.size() > 2) {
+          if (ids.size() > 1) {
               aruco::drawDetectedMarkers(image, corners, ids);
               int nMarkers = corners.size();
               vector<Point3f> corners2{};
               vector<Point2f> corners3{};
               for (int i = 0; i < ids.size(); i++) {
-              int idx = ids[i];
-              // cout << idx << endl;
-              if(idx<14){
-              corners2.push_back(objPoints[idx][0]);
-              corners2.push_back(objPoints[idx][1]);
-              corners2.push_back(objPoints[idx][2]);
-              corners2.push_back(objPoints[idx][3]);
-              corners3.push_back(corners[i][0]);
-              corners3.push_back(corners[i][1]);
-              corners3.push_back(corners[i][2]);
-              corners3.push_back(corners[i][3]);
-              // cout << idx << endl;
-              }
+                int idx = ids[i];
+                // cout << idx << endl;
+                if(idx<14){
+                  corners2.push_back(objPoints[idx][0]);
+                  corners2.push_back(objPoints[idx][1]);
+                  corners2.push_back(objPoints[idx][2]);
+                  corners2.push_back(objPoints[idx][3]);
+                  corners3.push_back(corners[i][0]);
+                  corners3.push_back(corners[i][1]);
+                  corners3.push_back(corners[i][2]);
+                  corners3.push_back(corners[i][3]);
+                  // cout << idx << endl;
+                }
               }
 
               // cout << ids << endl;
               // cout << corners2 << endl;
               // cout << corners3 << endl;  
               
-              solvePnP(corners2, corners3, cameraMatrix, distCoeffs, rvecs, tvecs, 1);
-              
-              rvecs1 =rvecs;
-              tvecs1 = tvecs;
+            solvePnP(corners2, corners3, cameraMatrix, distCoeffs, rvecs, tvecs, 1);
+            
+            if (tvecs.at<double>(1) > 200000){
+              tvecs = Mat::zeros(3, 1, CV_64F);
+            }
+            rvecs1 =rvecs;
+            tvecs1 = tvecs;
 
-              cout << tvecs << endl;
-              // Draw axis for each marker
-              drawFrameAxes(image, cameraMatrix, distCoeffs, rvecs, tvecs, 10);
-              // cout << tvecs << endl;             
-              
-              double angle = 18 * CV_PI / 180.0;
-              //  cout << tvecs << endl;
-              Mat camera_to_body = (cv::Mat_<double>(3, 3) << 
-                  1.0, 0.0, 0.0,
-                   0.0, cos(angle), -sin(angle),
-                   0.0, sin(angle), cos(angle));
+            cout << tvecs << endl;
+            // Draw axis for each marker
+            drawFrameAxes(image, cameraMatrix, distCoeffs, rvecs, tvecs, 10);
+            // cout << tvecs << endl;             
+            
+            double angle = 20 * CV_PI / 180.0;
+            //  cout << tvecs << endl;
+            Mat camera_to_body = (cv::Mat_<double>(3, 3) << 
+                1.0, 0.0, 0.0,
+                  0.0, cos(angle), -sin(angle),
+                  0.0, sin(angle), cos(angle));
 
-              tvecs1 = camera_to_body * tvecs1 ;
+            tvecs1 = camera_to_body * tvecs1 ;
 
-              cout << "new:" << endl;
-              cout << tvecs1 << endl;
+            cout << "new:" << endl;
+            cout << tvecs1 << endl;
 
-              tvecs1.convertTo(tvecs1, CV_16S, 10);
-              cout << tvecs1 << endl;
-              auto stop = high_resolution_clock::now();
-              auto duration = duration_cast<milliseconds>(stop - start);
-              cout << "frequency vision " << 1000/duration.count() << "Hz" << endl;
-              
-              start = stop;
+            tvecs1.convertTo(tvecs1, CV_16S, 10);
+            cout << tvecs1 << endl;
+            auto stop = high_resolution_clock::now();
+            auto duration = duration_cast<milliseconds>(stop - start);
+            cout << "frequency vision " << 1000/duration.count() << "Hz" << endl;
+            
+            start = stop;
 
-              // cout << prevtvecs << endl;
-              // tvecderriv = 1000*(tvecs1 - prevtvecs)/duration.count();
-              // cout << tvecderriv << endl;
-              prevtvecs = tvecs1;
-              //BUFFER IMPLEMENTATION
-              // auto durations = duration_cast<milliseconds>(stop-start1);
-              // TVECS[bufft][0] = 2;//output1.pi_translation_x;
-              // TVECS[bufft][1] = 2;//output1.pi_translation_y;
-              // TVECS[bufft][2] = 2;//output1.pi_translation_z;
-              // TIMES[bufft] = durations.count();
+            // cout << prevtvecs << endl;
+            tvecderriv = 1000*(tvecs1 - prevtvecs)/duration.count();
+            // cout << tvecderriv << endl;
+            prevtvecs = tvecs1;
+            //BUFFER IMPLEMENTATION
+            // auto durations = duration_cast<milliseconds>(stop-start1);
+            // TVECS[bufft][0] = 2;//output1.pi_translation_x;
+            // TVECS[bufft][1] = 2;//output1.pi_translation_y;
+            // TVECS[bufft][2] = 2;//output1.pi_translation_z;
+            // TIMES[bufft] = durations.count();
 
-              // if(bufft ==18){
-                           
-              //   // tvecderrivsmooth = (TVECS[bufft]-TVECS[0])/(TIMES[bufft]-TIMES[0]);
-              //   bufft = 0;
-              // }
-              // else{
-              //   // tvecderrivsmooth = (TVECS[bufft]-TVECS[bufft+1])/(TIMES[bufft]-TIMES[bufft+1]);
-              //   bufft ++;
-              // }
-              
-              // body rotation:
-                           
-              
-              
-              
-              tvecderriv.convertTo(tvecderriv, CV_16S, 10);
-              
-              
-              //ROTATIONS
-              Rodrigues(rvecs1, Rmatassume0);
-              // cout << "RMAT" << Rmatassume0 << endl;
-              
-              //////////////////////////////////////
-              float sy = sqrt(Rmatassume0.at<double>(0,0) * Rmatassume0.at<double>(0,0) +  Rmatassume0.at<double>(1,0) * Rmatassume0.at<double>(1,0) );
-  
-              bool singular = sy < 1e-6; // If
-          
-              float x, y, z;
-              if (!singular)
-              {
-                  x = 57.296 * atan2(Rmatassume0.at<double>(2,1) , Rmatassume0.at<double>(2,2));
-                  y = 57.296 * atan2(-Rmatassume0.at<double>(2,0), sy);
-                  z = 57.296 * atan2(Rmatassume0.at<double>(1,0), Rmatassume0.at<double>(0,0));
-              }
-              else
-              {
-                  x = 57.296 * atan2(-Rmatassume0.at<double>(1,2), Rmatassume0.at<double>(1,1));
-                  y = 57.296 * atan2(-Rmatassume0.at<double>(2,0), sy);
-                  z = 0;
-              }
+            // if(bufft ==18){
+                          
+            //   // tvecderrivsmooth = (TVECS[bufft]-TVECS[0])/(TIMES[bufft]-TIMES[0]);
+            //   bufft = 0;
+            // }
+            // else{
+            //   // tvecderrivsmooth = (TVECS[bufft]-TVECS[bufft+1])/(TIMES[bufft]-TIMES[bufft+1]);
+            //   bufft ++;
+            // }
+            
+            // body rotation:
+                          
+            
+            
+            
+            tvecderriv.convertTo(tvecderriv, CV_16S, 10);
+            
+            
+            //ROTATIONS
+            Rodrigues(rvecs1, Rmatassume0);
+            // cout << "RMAT" << Rmatassume0 << endl;
+            
+            //////////////////////////////////////
+            float sy = sqrt(Rmatassume0.at<double>(0,0) * Rmatassume0.at<double>(0,0) +  Rmatassume0.at<double>(1,0) * Rmatassume0.at<double>(1,0) );
 
-              // cout << "yaw1" <<z<< endl;
-              //////////////////////////////////////////////////////////////
-              // int waitTime = 10;
-              // // Show resulting image and close window
-              // imshow("out", imageCopy);
-              // char key = (char) waitKey(waitTime);
-              // if (key == 27)
-              //     break;
-              
-              output1.pi_translation_x = tvecs1.at<int16_t>(2);
-              output1.pi_translation_y = tvecs1.at<int16_t>(0);
-              output1.pi_translation_z = tvecs1.at<int16_t>(1);
-              output1.pi_rotation_x = (int)x; //rvecs1.at<int16_t>(0);
-              output1.pi_rotation_y = (int)y; //rvecs1.at<int16_t>(1);
-              output1.pi_rotation_z = (int)z; //rvecs1.at<int16_t>(2);
-              output1.pi_translation_speed_x = tvecderriv.at<int16_t>(2);
-              output1.pi_translation_speed_y = tvecderriv.at<int16_t>(0);
-              output1.pi_translation_speed_z = tvecderriv.at<int16_t>(1);
-              // cout << "x" << tvecderriv.at<int16_t>(0) << "x" << tvecderriv.at<int16_t>(1) << "x" << tvecderriv.at<int16_t>(2);
-              cout << output1.pi_translation_x << endl;
+            bool singular = sy < 1e-6; // If
+        
+            float x, y, z;
+            if (!singular)
+            {
+                x = 57.296 * atan2(Rmatassume0.at<double>(2,1) , Rmatassume0.at<double>(2,2));
+                y = 57.296 * atan2(-Rmatassume0.at<double>(2,0), sy);
+                z = 57.296 * atan2(Rmatassume0.at<double>(1,0), Rmatassume0.at<double>(0,0));
+            }
+            else
+            {
+                x = 57.296 * atan2(-Rmatassume0.at<double>(1,2), Rmatassume0.at<double>(1,1));
+                y = 57.296 * atan2(-Rmatassume0.at<double>(2,0), sy);
+                z = 0;
+            }
+
+            // cout << "yaw1" <<z<< endl;
+            //////////////////////////////////////////////////////////////
+            // int waitTime = 10;
+            // // Show resulting image and close window
+            // imshow("out", imageCopy);
+            // char key = (char) waitKey(waitTime);
+            // if (key == 27)
+            //     break;
+            
+            output1.pi_translation_x = tvecs1.at<int16_t>(2);
+            output1.pi_translation_y = tvecs1.at<int16_t>(0);
+            output1.pi_translation_z = tvecs1.at<int16_t>(1);
+            output1.pi_rotation_x = (int)x; //rvecs1.at<int16_t>(0);
+            output1.pi_rotation_y = (int)y; //rvecs1.at<int16_t>(1);
+            output1.pi_rotation_z = (int)z; //rvecs1.at<int16_t>(2);
+            output1.pi_translation_speed_x = tvecderriv.at<int16_t>(2);
+            output1.pi_translation_speed_y = tvecderriv.at<int16_t>(0);
+            output1.pi_translation_speed_z = tvecderriv.at<int16_t>(1);
+            // cout << "x" << tvecderriv.at<int16_t>(0) << "x" << tvecderriv.at<int16_t>(1) << "x" << tvecderriv.at<int16_t>(2);
+            cout << output1.pi_translation_x << endl;
+
+          }
 
         stringstream ss;
-        ss << "check/cyberzoo" << saveimageid << ".jpeg";
+        ss << "check/TEST1" << saveimageid << ".jpeg";
         string s = ss.str();
         imwrite(s,image);
         saveimageid ++;
@@ -422,7 +427,7 @@ void* second_thread() //Run the optimization code
         memcpy(&extra_data_out, &extra_data_out_copy, sizeof(struct am7_data_out));
         mutex_am7.unlock(); 
         // writing_routine();
-      }
+      
       }
 
     //Print received data if needed
