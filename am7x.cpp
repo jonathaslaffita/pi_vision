@@ -226,7 +226,7 @@ void* second_thread() //Run the optimization code
 
     Mat distCoeffs =  (Mat_<double>(5,1) <<  0.0345456336, 1.21214111, 0.00186630124, -0.00976556217, -4.42537856);  //0.9143256 , -1.91459431 ,-0.09495023 ,-0.08486384,  1.62500132);   //small res
        
-      vector<vector<Point3f>> objPoints{{Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1),Point3f(1,1,1)},
+      vector<vector<Point3f>> objPoints{{Point3f(-31.245,-98.472,-90.687),Point3f(31.245,-98.472,-90.687),Point3f(31.245,-44.354,-59.442),Point3f(-31.245,-44.354,-59.442)},
                                         {Point3f(-360.648,-30,724),Point3f(-300.648,-30,724),Point3f(-300.648,30,724),Point3f(-360.648,30,724)},
                                         {Point3f(100,-54.7,360),Point3f(129.4,-54.7,360),Point3f(129.4,-25.3,360),Point3f(100,-25.3,360)},
                                         {Point3f(199.6,-14.7,725),Point3f(229,-14.7,725),Point3f(229,14.7,725),Point3f(199.6,14.7,725)},
@@ -410,7 +410,7 @@ void* second_thread() //Run the optimization code
           }
 
         stringstream ss;
-        ss << "check/TEST1" << saveimageid << ".jpeg";
+        ss << "check/08" << saveimageid << ".jpeg";
         string s = ss.str();
         imwrite(s,image);
         saveimageid ++;
